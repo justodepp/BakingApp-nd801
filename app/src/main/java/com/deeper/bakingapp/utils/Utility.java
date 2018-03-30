@@ -252,11 +252,24 @@ public class Utility {
         }
     }
 
+    public static boolean isDeviceOnline(Context context){
+        ConnectivityManager connMgr = (ConnectivityManager)
+                context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        if (connMgr != null) {
+            NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+
+            return (networkInfo != null && networkInfo.isConnected());
+        }
+        else
+            return false;
+    }
+
     public static int getSpan(Context context) {
         if (context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            return 4;
+            return 2;
         }
-        return 2;
+        return 1;
     }
 
     public static String reformatDate(String releaseDate) {
