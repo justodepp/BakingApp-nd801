@@ -11,6 +11,6 @@ import retrofit2.http.GET;
 
 public interface ApiEndpointInterfaces {
 
-    @GET
+    @GET("baking.json")
     Call<BakingResponse> getDesserts();
 }

@@ -1,6 +1,7 @@
 package com.deeper.bakingapp.ui;
 
 import android.databinding.DataBindingUtil;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -23,7 +24,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
+public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener,
+        FragmentBakingRecipeList.OnFragmentInteractionListener {
 
     private ActivityMainBinding mBinding;
 
@@ -99,5 +101,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
     private void hideProgressBar() {
         swipeRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 }
