@@ -35,7 +35,7 @@ public class MyStepperAdapter extends AbstractFragmentStepAdapter {
         final FragmentStepper step = new FragmentStepper();
         Bundle b = new Bundle();
         b.putInt(KEY_STEP_POSITION, position);
-        b.putParcelable(StepperActivity.KEY_SELECTED_STEP, recipe.getSteps().get(position));
+        b.putParcelable(StepperActivity.SELECTED_STEP_KEY, recipe.getSteps().get(position));
         step.setArguments(b);
         return step;
     }

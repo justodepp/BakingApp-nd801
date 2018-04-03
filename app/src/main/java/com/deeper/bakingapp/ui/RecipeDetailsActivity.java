@@ -36,15 +36,15 @@ public class RecipeDetailsActivity extends AppCompatActivity implements Fragment
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        outState.putParcelable(StepperActivity.KEY_RECIPE, mRecipe);
+        outState.putParcelable(StepperActivity.RECIPE_KEY, mRecipe);
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
 
-        if (savedInstanceState.containsKey(StepperActivity.KEY_RECIPE))
-            mRecipe = savedInstanceState.getParcelable(StepperActivity.KEY_RECIPE);
+        if (savedInstanceState.containsKey(StepperActivity.RECIPE_KEY))
+            mRecipe = savedInstanceState.getParcelable(StepperActivity.RECIPE_KEY);
     }
 
     @Override
@@ -67,7 +67,7 @@ public class RecipeDetailsActivity extends AppCompatActivity implements Fragment
             return;
         }
 
-        mRecipe = startIntent.getParcelableExtra(StepperActivity.KEY_RECIPE);
+        mRecipe = startIntent.getParcelableExtra(StepperActivity.RECIPE_KEY);
         fragmentRecipeDetailsList.setRecipe(mRecipe);
     }
 
@@ -94,8 +94,9 @@ public class RecipeDetailsActivity extends AppCompatActivity implements Fragment
         Intent intent = new Intent(this, StepperActivity.class);
 
         Bundle bundle = new Bundle();
-        bundle.putParcelable(StepperActivity.KEY_RECIPE, mRecipe);
-        bundle.putParcelable(StepperActivity.KEY_SELECTED_STEP, step);
+        bundle.putParcelable(StepperActivity.RECIPE_KEY, mRecipe);
+        bundle.putParcelable(StepperActivity.SELECTED_STEP_KEY, step);
+        bundle.putInt(StepperActivity.CURRENT_STEP_POSITION_KEY, position);
         intent.putExtras(bundle);
         startActivity(intent);
     }

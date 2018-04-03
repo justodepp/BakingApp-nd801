@@ -21,8 +21,9 @@ import com.stepstone.stepper.VerificationError;
 
 public class StepperActivity extends AppCompatActivity implements StepperLayout.StepperListener{
 
-    public static final String KEY_RECIPE = "recipe";
-    public static final String KEY_SELECTED_STEP = "selected_step";
+    public static final String RECIPE_KEY = "recipe";
+    public static final String SELECTED_STEP_KEY = "step_selected";
+    public static final String CURRENT_STEP_POSITION_KEY = "position";
 
     ActivityDetailsStepperBinding mBinding;
 
@@ -35,13 +36,16 @@ public class StepperActivity extends AppCompatActivity implements StepperLayout.
 
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_details_stepper);
 
-        mRecipe = getIntent().getParcelableExtra(KEY_RECIPE);
-        step = getIntent().getParcelableExtra(KEY_SELECTED_STEP);
+        mRecipe = getIntent().getParcelableExtra(RECIPE_KEY);
+        step = getIntent().getParcelableExtra(SELECTED_STEP_KEY);
+
+        int startingStepPosition = savedInstanceState != null ? savedInstanceState.getInt(CURRENT_STEP_POSITION_KEY)
+                : getIntent().getIntExtra(CURRENT_STEP_POSITION_KEY, 0);
 
         initToolbar();
 
         mBinding.stepperLayout.setAdapter(new MyStepperAdapter(getSupportFragmentManager(),
-                this, step, mRecipe));
+                this, step, mRecipe), startingStepPosition);
         mBinding.stepperLayout.setListener(this);
     }
 
@@ -52,6 +56,12 @@ public class StepperActivity extends AppCompatActivity implements StepperLayout.
             getSupportActionBar().setTitle(mRecipe.getName());
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+    }
+
+    @Override
+    protected  void onSaveInstanceState(Bundle outState) {
+        outState.putInt(CURRENT_STEP_POSITION_KEY, mBinding.stepperLayout.getCurrentStepPosition());
+        super.onSaveInstanceState(outState);
     }
 
     @Override

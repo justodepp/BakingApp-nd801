@@ -55,8 +55,8 @@ public class FragmentStepper extends Fragment implements Step {
     }
 
     private void initUI() {
-        if (getArguments().getParcelable(StepperActivity.KEY_SELECTED_STEP) == null) return;
-        step = getArguments().getParcelable(StepperActivity.KEY_SELECTED_STEP);
+        if (getArguments().getParcelable(StepperActivity.SELECTED_STEP_KEY) == null) return;
+        step = getArguments().getParcelable(StepperActivity.SELECTED_STEP_KEY);
 
         initializePlayer();
     }
