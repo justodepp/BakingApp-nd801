@@ -36,12 +36,13 @@
                 app:layout_constraintTop_toBottomOf="@+id/appbar"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/stepperLayout"
                 tools:layout="@layout/fragment_details_stepper" />
 
             <com.stepstone.stepper.StepperLayout
                 android:id="@+id/stepperLayout"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
+                android:layout_height="match_parent"
                 android:background="@android:color/white"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
