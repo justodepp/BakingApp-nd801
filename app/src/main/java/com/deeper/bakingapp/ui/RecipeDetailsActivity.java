@@ -96,7 +96,6 @@ public class RecipeDetailsActivity extends AppCompatActivity implements Fragment
         Bundle bundle = new Bundle();
         bundle.putParcelable(StepperActivity.KEY_RECIPE, mRecipe);
         bundle.putParcelable(StepperActivity.KEY_SELECTED_STEP, step);
-
         intent.putExtras(bundle);
         startActivity(intent);
     }
