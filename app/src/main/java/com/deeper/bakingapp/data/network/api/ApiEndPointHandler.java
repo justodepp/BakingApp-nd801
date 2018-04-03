@@ -30,6 +30,10 @@ public class ApiEndPointHandler {
         return getApiService(context, true, Params.ENDPOINT);
     }
 
+    public static ApiEndpointInterfaces getApiService(Context context, boolean converter) {
+        return getApiService(context, converter, Params.ENDPOINT);
+    }
+
     public static ApiEndpointInterfaces getApiService(Context context, boolean useConverter, String ENDPOINT) {
         OkHttpClient okHttpClient = new OkHttpClient.Builder().addInterceptor(new Interceptor() {
             @Override
@@ -44,14 +48,20 @@ public class ApiEndPointHandler {
             }
         }).build();
 
-        Retrofit.Builder retrofitBuilder = new Retrofit.Builder()
-                .baseUrl(ENDPOINT)
-                .client(okHttpClient);
-
+        Retrofit.Builder retrofitBuilder = new Retrofit.Builder();
         if (useConverter) {
+            retrofitBuilder
+                    .baseUrl(ENDPOINT)
+                    .client(okHttpClient);
+
             Gson gson = new GsonBuilder().registerTypeAdapterFactory(new WorkaroundGson()).create();
             retrofitBuilder.addConverterFactory(GsonConverterFactory.create(gson));
             retrofitBuilder.addCallAdapterFactory(RxJava2CallAdapterFactory.create());
+        } else {
+            retrofitBuilder
+                    .baseUrl(ENDPOINT)
+                    .client(okHttpClient)
+                    .addConverterFactory(GsonConverterFactory.create());
         }
 
         return retrofitBuilder.build().create(ApiEndpointInterfaces.class);

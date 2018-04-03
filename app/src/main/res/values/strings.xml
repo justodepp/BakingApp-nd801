@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">BakingApp</string>
     <string name="item_recipe_image">Recipe image</string>
-    <string name="error_internet_connection">Seems you have no internet connection, retry.</string>
+    <string name="error_internet_connection">Seems you have no internet connection, swipe to retry.</string>
     <string name="retry">Retry</string>
 
     <!-- TODO: Remove or change this placeholder text -->

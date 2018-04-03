@@ -8,6 +8,9 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.deeper.bakingapp.R;
 import com.deeper.bakingapp.data.network.api.ApiEndPointHandler;
@@ -25,12 +28,13 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener,
-        FragmentBakingRecipeList.OnFragmentInteractionListener {
+        FragmentBakingRecipeList.OnFragmentInteractionListener, RecipeListAdapter.RecipeClickListener {
 
     private ActivityMainBinding mBinding;
 
     private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView mRecyclerView;
+    private TextView mTextError;
 
     private ArrayList<BakingResponse> recipeList = new ArrayList<>();
     private RecipeListAdapter recipeAdapter;
@@ -63,36 +67,51 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, Utility.getSpan(this)));
         mRecyclerView.setHasFixedSize(true);
 
+        mTextError = findViewById(R.id.error_no_connection);
+
         fetchingData();
     }
 
     private void fetchingData() {
-        showProgressBar();
+        if(Utility.isDeviceOnline(this)) {
+            showProgressBar();
 
-        ApiEndpointInterfaces apiService = ApiEndPointHandler.getApiService(this);
-        Call<BakingResponse> responseBaking = apiService.getDesserts();
+            ApiEndpointInterfaces apiService = ApiEndPointHandler.getApiService(this, false);
+            Call<BakingResponse[]> responseBaking = apiService.getDesserts();
 
-        responseBaking.enqueue(new Callback<BakingResponse>() {
-            @Override
-            public void onResponse(Call<BakingResponse> call, Response<BakingResponse> response) {
-                if (response.isSuccessful()){
-                    recipeList.add(response.body());
+            responseBaking.enqueue(new Callback<BakingResponse[]>() {
+                @Override
+                public void onResponse(Call<BakingResponse[]> call, Response<BakingResponse[]> response) {
+                    if (response.isSuccessful()) {
+                        for (int i = 0; i < response.body().length; i++) {
+                            recipeList.add(response.body()[i]);
+                        }
+
+                        recipeAdapter = new RecipeListAdapter(MainActivity.this, recipeList, MainActivity.this);
+                        mRecyclerView.setAdapter(recipeAdapter);
+
+                        showData();
+                    }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<BakingResponse> call, Throwable t) {
-                hideProgressBar();
+                @Override
+                public void onFailure(Call<BakingResponse[]> call, Throwable t) {
+                    hideProgressBar();
 
-                Snackbar.make(mBinding.coordinatorView, R.string.error_internet_connection,
-                        Snackbar.LENGTH_LONG).show();
-            }
-        });
+                    Snackbar.make(mBinding.coordinatorView, R.string.error_internet_connection,
+                            Snackbar.LENGTH_LONG).show();
+                }
+            });
+        } else {
+            showErrorMessage();
+        }
     }
 
     @Override
     public void onRefresh() {
-
+        if(recipeList.size() != 0)
+            recipeList.clear();
+        fetchingData();
     }
 
     private void showProgressBar() {
@@ -103,8 +122,25 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         swipeRefreshLayout.setRefreshing(false);
     }
 
+    private void showErrorMessage(){
+        hideProgressBar();
+        mRecyclerView.setVisibility(View.GONE);
+        mTextError.setVisibility(View.VISIBLE);
+    }
+
+    private void showData(){
+        hideProgressBar();
+        mRecyclerView.setVisibility(View.VISIBLE);
+        mTextError.setVisibility(View.GONE);
+    }
+
     @Override
     public void onFragmentInteraction(Uri uri) {
+
+    }
+
+    @Override
+    public void onClickRecipeItem(int position, BakingResponse recipe, ImageView clickedImage) {
 
     }
 }
