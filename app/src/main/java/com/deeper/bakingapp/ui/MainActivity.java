@@ -1,7 +1,7 @@
 package com.deeper.bakingapp.ui;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -9,9 +9,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.deeper.bakingapp.BuildConfig;
 import com.deeper.bakingapp.R;
 import com.deeper.bakingapp.data.network.api.ApiEndPointHandler;
 import com.deeper.bakingapp.data.network.api.ApiEndpointInterfaces;
@@ -26,9 +26,10 @@ import java.util.ArrayList;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import timber.log.Timber;
 
 public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener,
-        FragmentBakingRecipeList.OnFragmentInteractionListener, RecipeListAdapter.RecipeClickListener {
+        RecipeListAdapter.RecipeClickListener {
 
     private ActivityMainBinding mBinding;
 
@@ -43,6 +44,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+
+        if (BuildConfig.DEBUG) {
+            Timber.plant(new Timber.DebugTree());
+        }
 
         //Stetho.initializeWithDefaults(this);
         Stetho.initialize(
@@ -135,12 +140,11 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     }
 
     @Override
-    public void onFragmentInteraction(Uri uri) {
-
-    }
-
-    @Override
-    public void onClickRecipeItem(int position, BakingResponse recipe, ImageView clickedImage) {
-
+    public void onClickRecipeItem(BakingResponse recipe) {
+        Intent intent = new Intent(this, RecipeDetailsActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("recipe", recipe);
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 }

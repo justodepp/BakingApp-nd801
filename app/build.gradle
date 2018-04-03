@@ -32,7 +32,7 @@ dependencies {
     implementation "com.android.support:recyclerview-v7:${supportLibVersion}"
     implementation "com.android.support:cardview-v7:${supportLibVersion}"
     implementation "com.android.support.constraint:constraint-layout:1.0.2"
-    implementation 'com.squareup.picasso:picasso:2.71828'
+
 
     // Retrofit
     implementation 'com.android.support:support-v4:27.1.0'
@@ -45,5 +45,11 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
 
+    // Third Part Library
+    implementation 'de.hdodenhof:circleimageview:2.2.0'
+    implementation 'com.google.android.exoplayer:exoplayer:2.6.1'
+    compile 'com.stepstone.stepper:material-stepper:4.3.1'
+    implementation 'com.squareup.picasso:picasso:2.71828'
     compile 'com.facebook.stetho:stetho:1.5.0'
+    implementation 'com.jakewharton.timber:timber:4.7.0'
 }

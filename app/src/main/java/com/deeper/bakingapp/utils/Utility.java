@@ -18,6 +18,8 @@ import android.util.Log;
 import android.view.Display;
 import android.view.View;
 
+import com.deeper.bakingapp.R;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -270,6 +272,11 @@ public class Utility {
             return 2;
         }
         return 1;
+    }
+
+    public static boolean isTablet(Context context) {
+        return context.getResources()
+                .getBoolean(R.bool.isTablet);
     }
 
     public static String reformatDate(String releaseDate) {

@@ -81,6 +81,17 @@ public class BakingResponse implements Parcelable {
         this.image = image;
     }
 
+    public String printIngredients() {
+        if (getIngredients() == null) return null;
+
+        StringBuilder result = new StringBuilder();
+        for (BakingIngredient ingredient : getIngredients())
+            result.append(ingredient.getIngredient()).append(", ");
+        result.replace(result.length() - 3, result.length() -1, "");
+
+        return result.toString();
+    }
+
     @Override
     public int describeContents() {
         return 0;

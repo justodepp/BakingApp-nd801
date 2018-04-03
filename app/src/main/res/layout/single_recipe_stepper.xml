@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/constraint_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        android:orientation="vertical"
+        android:padding="@dimen/activity_vertical_margin"
+        tools:context=".ui.StepDetailActivity">
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/recipe_image_container"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/recipe_image_card_height"
+            app:cardElevation="2dp"
+            app:cardUseCompatPadding="true">
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fitsSystemWindows="true"
+                android:background="@android:color/white"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/recipe_imageview"
+                    android:layout_width="@dimen/recipe_image_card_width"
+                    android:layout_height="@dimen/recipe_image_card_height"
+                    android:padding="@dimen/activity_vertical_margin"
+                    android:contentDescription="@string/recipe_image"
+                    android:fitsSystemWindows="true"
+                    android:scaleType="fitCenter"
+                    tools:src="@tools:sample/avatars" />
+
+                <TextView
+                    android:id="@+id/name_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginStart="8dp"
+                    android:ellipsize="end"
+                    android:maxLines="3"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="24sp"
+                    app:layout_constraintStart_toEndOf="@+id/recipe_imageview"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Nutella Pie" />
+
+                <LinearLayout
+                    android:id="@+id/servings_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginStart="8dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintStart_toEndOf="@+id/recipe_imageview"
+                    app:layout_constraintTop_toBottomOf="@+id/name_textview">
+
+                    <TextView
+                        android:id="@+id/servings_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/servings_label"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/servings_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginStart="8dp"
+                        tools:text="8" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/ingredients_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/ingredients_label"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@+id/recipe_imageview"
+                    app:layout_constraintTop_toBottomOf="@+id/servings_layout" />
+
+                <TextView
+                    android:id="@+id/ingredients_textview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginTop="4dp"
+                    android:ellipsize="end"
+                    android:maxLines="5"
+                    app:layout_constraintStart_toEndOf="@+id/recipe_imageview"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/ingredients_label"
+                    tools:text="Some ingredients to use for make a delicious piece of cake" />
+
+            </android.support.constraint.ConstraintLayout>
+        </android.support.v7.widget.CardView>
+
+        <TextView
+            android:id="@+id/label_steps"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:text="@string/steps_label"
+            android:textColor="@color/colorPrimaryDark"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/recipe_image_container" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_main"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:clipToPadding="false"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/label_steps"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:listitem="@layout/single_recipe_item_list" />
+
+    </android.support.constraint.ConstraintLayout>
+
+</layout>

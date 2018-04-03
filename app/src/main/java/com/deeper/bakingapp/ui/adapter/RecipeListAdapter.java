@@ -4,10 +4,10 @@ import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import com.deeper.bakingapp.R;
 import com.deeper.bakingapp.data.network.model.BakingResponse;
@@ -28,7 +28,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
     private final RecipeClickListener mRecipeClickListener;
 
     public interface RecipeClickListener {
-        void onClickRecipeItem(int position, BakingResponse recipe, ImageView clickedImage);
+        void onClickRecipeItem(BakingResponse recipe);
     }
 
     public RecipeListAdapter(Context context, ArrayList<BakingResponse> recipe, RecipeClickListener recipeClickListener){
@@ -68,7 +68,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
         }
 
         public void bind(int position){
-            int resource = R.drawable.img_brownies;
+            int resource = R.drawable.img_cupcake;
             if(recipe.get(position).getName().toLowerCase().contains("nutella"))
                 resource = R.drawable.img_nutella_pie;
             else if(recipe.get(position).getName().toLowerCase().contains("yellow"))
@@ -77,7 +77,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
                 resource = R.drawable.img_brownies;
             else if(recipe.get(position).getName().toLowerCase().contains("cheese"))
                 resource = R.drawable.img_cheesecake;
-            if(recipe.get(position).getImage() != null && !recipe.get(position).getImage().equals("")) {
+            if (!TextUtils.isEmpty(recipe.get(position).getImage())) {
                 Picasso.get()
                         .load(recipe.get(position).getImage())
                         .error(resource)
@@ -97,7 +97,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
         @Override
         public void onClick(View view) {
             int clickPosition = getAdapterPosition();
-            mRecipeClickListener.onClickRecipeItem(clickPosition, recipe.get(clickPosition), mBinding.recipeImageview);
+            mRecipeClickListener.onClickRecipeItem(recipe.get(clickPosition));
         }
     }
 }

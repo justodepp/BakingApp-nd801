@@ -3,6 +3,18 @@
     <string name="item_recipe_image">Recipe image</string>
     <string name="error_internet_connection">Seems you have no internet connection, swipe to retry.</string>
     <string name="retry">Retry</string>
+    <string name="servings_label">Servings:</string>
+    <string name="ingredients_label">Ingredients</string>
+
+    <!-- Step Label -->
+    <string name="steps_label">Steps</string>
+    <string name="step_video_not_available">No video available.</string>
+    <string name="step_detail">Step details</string>
+
+    <!-- Content Description -->
+    <string name="recipe_image">Recipe image</string>
+    <string name="step_number">Step number</string>
+    <string name="step_thumbnail">Step\'s Thumbnail</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
