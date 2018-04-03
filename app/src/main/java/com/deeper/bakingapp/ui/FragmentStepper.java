@@ -137,7 +137,7 @@ public class FragmentStepper extends Fragment implements Step {
         boolean hasThumbnail = !TextUtils.isEmpty(step.getThumbnailURL());
         if(hasVideo) {
 
-            Uri uri = Uri.parse("url video da STEP");
+            Uri uri = Uri.parse(step.getVideoURL());
             MediaSource mediaSource = buildMediaSource(uri);
             mExoPlayer.prepare(mediaSource, true, false);
 
@@ -145,11 +145,20 @@ public class FragmentStepper extends Fragment implements Step {
             mExoPlayer.seekTo(currentWindow, playbackPosition);
 
         } else if(hasThumbnail) {
-            mBinding.labelVideoNotAvailable.setVisibility(View.GONE);
-            mBinding.stepThumbnail.setVisibility(View.VISIBLE);
-            mBinding.playerView.setVisibility(View.GONE);
+            if(step.getThumbnailURL().endsWith(".mp4")){
+                Uri uri = Uri.parse(step.getThumbnailURL());
+                MediaSource mediaSource = buildMediaSource(uri);
+                mExoPlayer.prepare(mediaSource, true, false);
 
-            Picasso.get().load(step.getThumbnailURL()).into(mBinding.stepThumbnail);
+                mExoPlayer.setPlayWhenReady(playWhenReady);
+                mExoPlayer.seekTo(currentWindow, playbackPosition);
+            } else {
+                mBinding.labelVideoNotAvailable.setVisibility(View.GONE);
+                mBinding.stepThumbnail.setVisibility(View.VISIBLE);
+                mBinding.playerView.setVisibility(View.GONE);
+
+                Picasso.get().load(step.getThumbnailURL()).into(mBinding.stepThumbnail);
+            }
         } else {
             mBinding.labelVideoNotAvailable.setVisibility(View.VISIBLE);
             mBinding.stepThumbnail.setVisibility(View.GONE);
