@@ -49,11 +49,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:ms_showErrorState="true"
-                app:ms_stepperFeedbackType="tabs|content_progress|content_fade|disabled_bottom_navigation|disabled_content_interaction"
-                app:ms_stepperFeedback_contentFadeAlpha="0.3"
                 app:ms_stepperType="dots"
-                tools:theme="@style/AppTheme" />
+                tools:theme="@style/AppTheme.NoActionBar" />
 
         </android.support.constraint.ConstraintLayout>
 

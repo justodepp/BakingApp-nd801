@@ -8,18 +8,17 @@ import android.view.MenuItem;
 
 import com.deeper.bakingapp.R;
 import com.deeper.bakingapp.data.network.model.BakingResponse;
+import com.deeper.bakingapp.data.network.model.BakingStep;
 import com.deeper.bakingapp.databinding.ActivityRecipeStepperBinding;
 
 /**
  * Created by Gianni on 03/04/18.
  */
 
-public class RecipeDetailsActivity extends AppCompatActivity {
+public class RecipeDetailsActivity extends AppCompatActivity implements FragmentRecipeDetailsList.OnStepClicked{
 
     ActivityRecipeStepperBinding mBinding;
     FragmentRecipeDetailsList fragmentRecipeDetailsList;
-
-    private static final String KEY_RECIPE = "recipe";
 
     private BakingResponse mRecipe;
 
@@ -37,15 +36,15 @@ public class RecipeDetailsActivity extends AppCompatActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        outState.putParcelable(KEY_RECIPE, mRecipe);
+        outState.putParcelable(StepperActivity.KEY_RECIPE, mRecipe);
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
 
-        if (savedInstanceState.containsKey(KEY_RECIPE))
-            mRecipe = savedInstanceState.getParcelable(KEY_RECIPE);
+        if (savedInstanceState.containsKey(StepperActivity.KEY_RECIPE))
+            mRecipe = savedInstanceState.getParcelable(StepperActivity.KEY_RECIPE);
     }
 
     @Override
@@ -68,9 +67,8 @@ public class RecipeDetailsActivity extends AppCompatActivity {
             return;
         }
 
-        mRecipe = startIntent.getParcelableExtra(KEY_RECIPE);
+        mRecipe = startIntent.getParcelableExtra(StepperActivity.KEY_RECIPE);
         fragmentRecipeDetailsList.setRecipe(mRecipe);
-
     }
 
     private void initUI() {
@@ -78,6 +76,8 @@ public class RecipeDetailsActivity extends AppCompatActivity {
                 .findFragmentById(R.id.recipe_detail_fragment);
 
         parseData();
+
+        fragmentRecipeDetailsList.setStepClickedListener(this);
     }
 
     private void initToolbar() {
@@ -87,5 +87,17 @@ public class RecipeDetailsActivity extends AppCompatActivity {
             getSupportActionBar().setTitle(mRecipe.getName());
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+    }
+
+    @Override
+    public void onClickedStep(int position, BakingStep step) {
+        Intent intent = new Intent(this, StepperActivity.class);
+
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(StepperActivity.KEY_RECIPE, mRecipe);
+        bundle.putParcelable(StepperActivity.KEY_SELECTED_STEP, step);
+
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 }

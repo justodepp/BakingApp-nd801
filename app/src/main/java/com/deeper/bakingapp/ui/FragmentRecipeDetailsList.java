@@ -1,7 +1,10 @@
 package com.deeper.bakingapp.ui;
 
+import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
@@ -18,18 +21,26 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-import timber.log.Timber;
-
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link FragmentRecipeDetailsList} factory method to
  * create an instance of this fragment.
  */
-public class FragmentRecipeDetailsList extends Fragment implements RecipeDetailsListAdapter.RecipeClickListener {
+public class FragmentRecipeDetailsList extends Fragment implements RecipeDetailsListAdapter.OnStepClickListener {
 
     SingleRecipeStepperBinding mBinding;
 
     private BakingResponse mRecipe;
+
+    private OnStepClicked mStepClicked;
+
+    public interface OnStepClicked {
+        void onClickedStep(int position, BakingStep step);
+    }
+
+    public void setStepClickedListener(OnStepClicked listener) {
+        this.mStepClicked = listener;
+    }
 
     public FragmentRecipeDetailsList() {
         // Required empty public constructor
@@ -38,12 +49,16 @@ public class FragmentRecipeDetailsList extends Fragment implements RecipeDetails
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         // Inflate the layout for this fragment
         mBinding = DataBindingUtil.inflate(inflater, R.layout.single_recipe_stepper,
                 container, false);
 
         return mBinding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
     }
 
     public void setRecipe(BakingResponse recipe) {
@@ -91,7 +106,26 @@ public class FragmentRecipeDetailsList extends Fragment implements RecipeDetails
     }
 
     @Override
-    public void onClickStepItem(int position) {
-        Timber.d("Single step clicked" + position);
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        try {
+            mStepClicked = (OnStepClicked) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString()
+                    + " must implement OnFavouriteClickListener");
+        }
+
+        /*try {
+            mStepClickCallback = (OnStepClickListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString()
+                    + " must implement OnStepClickListener");
+        }*/
+    }
+
+    @Override
+    public void onClickStepItem(int position, BakingStep step) {
+        mStepClicked.onClickedStep(position, step);
     }
 }

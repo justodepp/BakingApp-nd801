@@ -22,16 +22,16 @@ public class RecipeDetailsListAdapter extends RecyclerView.Adapter<RecipeDetails
     private Context context;
     private ArrayList<BakingStep> steps;
 
-    private final RecipeClickListener mRecipeClickListener;
+    private final OnStepClickListener mStepClickListener;
 
-    public interface RecipeClickListener {
-        void onClickStepItem(int position);
+    public interface OnStepClickListener {
+        void onClickStepItem(int position, BakingStep step);
     }
 
-    public RecipeDetailsListAdapter(Context context, ArrayList<BakingStep> steps, RecipeClickListener recipeClickListener){
+    public RecipeDetailsListAdapter(Context context, ArrayList<BakingStep> steps, OnStepClickListener recipeClickListener){
         this.context = context;
         this.steps = steps;
-        mRecipeClickListener = recipeClickListener;
+        mStepClickListener = recipeClickListener;
     }
 
     @Override
@@ -72,7 +72,7 @@ public class RecipeDetailsListAdapter extends RecyclerView.Adapter<RecipeDetails
         @Override
         public void onClick(View view) {
             int clickPosition = getAdapterPosition();
-            mRecipeClickListener.onClickStepItem(clickPosition);
+            mStepClickListener.onClickStepItem(clickPosition, steps.get(clickPosition));
         }
     }
 }
