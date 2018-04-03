@@ -33,24 +33,21 @@
                 android:name="com.deeper.bakingapp.ui.FragmentBakingRecipeList"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                app:layout_constraintBottom_toTopOf="@id/stepperLayout"
+                app:layout_constraintTop_toBottomOf="@+id/appbar"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/appbar"
                 tools:layout="@layout/fragment_details_stepper" />
 
-            <com.stepstone.stepper.StepperLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                xmlns:tools="http://schemas.android.com/tools"
+            <com.stepstone.stepper.StepperLayout
                 android:id="@+id/stepperLayout"
-                android:layout_width="wrap_content"
-                android:layout_height="?actionBarSize"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
                 android:background="@android:color/white"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/step_detail_fragment"
                 app:ms_stepperType="dots"
-                tools:theme="@style/AppTheme.NoActionBar" />
+                tools:theme="@style/AppTheme" />
 
         </android.support.constraint.ConstraintLayout>
 

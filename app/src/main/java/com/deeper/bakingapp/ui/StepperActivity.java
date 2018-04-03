@@ -53,9 +53,6 @@ public class StepperActivity extends AppCompatActivity implements StepperLayout.
     @Override
     public void onStepSelected(int newStepPosition) {
         Toast.makeText(this, "onStepSelected! -> " + newStepPosition, Toast.LENGTH_SHORT).show();
-
-        mStepperLayout.setAdapter(new MyStepperAdapter(getSupportFragmentManager(),
-                this, step, mRecipe));
     }
 
     @Override
