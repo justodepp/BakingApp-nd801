@@ -36,6 +36,8 @@ import timber.log.Timber;
 
 public class FragmentStepper extends Fragment implements Step {
 
+    private static final String CURRENT_VIDEO_POSITION = "video_position";
+
     FragmentDetailsStepperBinding mBinding;
     BakingStep step;
 
@@ -45,10 +47,10 @@ public class FragmentStepper extends Fragment implements Step {
     private long playbackPosition = 0;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_details_stepper,
                 container, false);
-
+        playbackPosition = savedInstanceState != null ? savedInstanceState.getLong(CURRENT_VIDEO_POSITION) : 0;
         initUI();
 
         return mBinding.getRoot();
@@ -62,6 +64,13 @@ public class FragmentStepper extends Fragment implements Step {
     }
 
     @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        if(mExoPlayer != null)
+            outState.putLong(CURRENT_VIDEO_POSITION, mExoPlayer.getCurrentPosition());
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
     public VerificationError verifyStep() {
         //return null if the user can go to the next step, create a new VerificationError instance otherwise
         return null;
@@ -70,7 +79,6 @@ public class FragmentStepper extends Fragment implements Step {
     @Override
     public void onSelected() {
         //update UI when selected
-        Timber.d("selected STEP fragment");
         updateUI();
     }
 
@@ -136,7 +144,6 @@ public class FragmentStepper extends Fragment implements Step {
         boolean hasVideo = !TextUtils.isEmpty(step.getVideoURL());
         boolean hasThumbnail = !TextUtils.isEmpty(step.getThumbnailURL());
         if(hasVideo) {
-
             Uri uri = Uri.parse(step.getVideoURL());
             MediaSource mediaSource = buildMediaSource(uri);
             mExoPlayer.prepare(mediaSource, true, false);
