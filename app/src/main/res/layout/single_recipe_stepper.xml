@@ -128,6 +128,15 @@
             app:layout_constraintBottom_toBottomOf="parent"
             tools:listitem="@layout/single_recipe_item_list" />
 
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/favorite_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/activity_vertical_margin"
+            android:layout_gravity="bottom|end"
+            app:srcCompat="@drawable/ic_favorite_off"
+            app:fabSize="normal"/>
+
     </android.support.constraint.ConstraintLayout>
 
 </layout>

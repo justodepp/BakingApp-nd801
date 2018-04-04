@@ -5,7 +5,8 @@
     <string name="retry">Retry</string>
     <string name="servings_label">Servings:</string>
     <string name="ingredients_label">Ingredients</string>
-
+    <string name="recipe_not_selected">Select almost one recipe.</string>
+    <string name="step_not_selected">Select almost one step.</string>
     <!-- Step Label -->
     <string name="steps_label">Steps</string>
     <string name="step_video_not_available">No video available.</string>

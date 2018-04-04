@@ -30,7 +30,7 @@
 
             <fragment
                 android:id="@+id/step_detail_fragment"
-                android:name="com.deeper.bakingapp.ui.FragmentBakingRecipeList"
+                android:name="com.deeper.bakingapp.ui.FragmentStepper"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"

@@ -268,7 +268,8 @@ public class Utility {
     }
 
     public static int getSpan(Context context) {
-        if (context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        if (context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE
+                || isTablet(context)) {
             return 2;
         }
         return 1;
