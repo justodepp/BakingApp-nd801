@@ -142,7 +142,9 @@ public class FragmentStepper extends Fragment implements Step {
         mExoPlayer.setPlayWhenReady(playWhenReady);
         mExoPlayer.seekTo(currentWindow, playbackPosition);
 
-        updatePlayer();
+        Uri uri = Uri.parse("");
+        MediaSource mediaSource = buildMediaSource(uri);
+        mExoPlayer.prepare(mediaSource, true, false);
     }
 
     private void updatePlayer(){

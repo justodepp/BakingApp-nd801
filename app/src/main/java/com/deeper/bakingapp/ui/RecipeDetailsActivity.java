@@ -41,7 +41,8 @@ public class RecipeDetailsActivity extends AppCompatActivity implements Fragment
         mLandscape = getResources().getConfiguration().orientation ==
                 Configuration.ORIENTATION_LANDSCAPE;
 
-        initUI(savedInstanceState);
+        parseData(savedInstanceState);
+        initUI();
         initToolbar();
     }
 
@@ -84,7 +85,6 @@ public class RecipeDetailsActivity extends AppCompatActivity implements Fragment
         }
 
         mRecipe = startIntent.getParcelableExtra(StepperActivity.RECIPE_KEY);
-        fragmentRecipeDetailsList.setRecipe(mRecipe);
 
         mStep = startIntent.getParcelableExtra(StepperActivity.SELECTED_STEP_KEY);
         stepItemPosition = startIntent.getIntExtra(StepperActivity.CURRENT_STEP_POSITION_KEY, 0);
@@ -93,11 +93,10 @@ public class RecipeDetailsActivity extends AppCompatActivity implements Fragment
             mStep = savedInstanceState.getParcelable(StepperActivity.SELECTED_STEP_KEY);
     }
 
-    private void initUI(Bundle savedInstanceState) {
+    private void initUI() {
         fragmentRecipeDetailsList = (FragmentRecipeDetailsList) getSupportFragmentManager()
                 .findFragmentById(R.id.recipe_detail_fragment);
-
-        parseData(savedInstanceState);
+        fragmentRecipeDetailsList.setRecipe(mRecipe);
 
         fragmentRecipeDetailsList.setStepClickedListener(this);
         if (mIsTablet && mLandscape) {
