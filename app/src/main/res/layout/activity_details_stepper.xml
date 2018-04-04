@@ -49,6 +49,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:ms_completeButtonColor="@color/colorPrimary"
                 app:ms_stepperType="dots"
                 tools:theme="@style/AppTheme" />
 
