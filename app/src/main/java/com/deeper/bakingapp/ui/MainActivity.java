@@ -251,6 +251,12 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
     @Override
     public void onClickedStep(int position, BakingStep step) {
-
+        Intent intent = new Intent(this, RecipeDetailsActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(StepperActivity.RECIPE_KEY, mRecipe);
+        bundle.putParcelable(StepperActivity.SELECTED_STEP_KEY, step);
+        bundle.putInt(StepperActivity.CURRENT_STEP_POSITION_KEY, position);
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 }

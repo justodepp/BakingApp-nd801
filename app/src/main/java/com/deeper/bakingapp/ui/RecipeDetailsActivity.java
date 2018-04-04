@@ -1,10 +1,12 @@
 package com.deeper.bakingapp.ui;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.deeper.bakingapp.R;
 import com.deeper.bakingapp.data.network.model.BakingResponse;
@@ -15,12 +17,19 @@ import com.deeper.bakingapp.databinding.ActivityRecipeStepperBinding;
  * Created by Gianni on 03/04/18.
  */
 
-public class RecipeDetailsActivity extends AppCompatActivity implements FragmentRecipeDetailsList.OnStepClicked{
+public class RecipeDetailsActivity extends AppCompatActivity implements FragmentRecipeDetailsList.OnStepClicked {
 
     ActivityRecipeStepperBinding mBinding;
     FragmentRecipeDetailsList fragmentRecipeDetailsList;
+    FragmentStepper mStepDetailFragment;
 
     private BakingResponse mRecipe;
+    private BakingStep mStep;
+
+    private int stepItemPosition = -1;
+
+    private boolean mLandscape;
+    private boolean mIsTablet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +37,11 @@ public class RecipeDetailsActivity extends AppCompatActivity implements Fragment
 
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_recipe_stepper);
 
-        initUI();
+        mIsTablet = getResources().getBoolean(R.bool.isTablet);
+        mLandscape = getResources().getConfiguration().orientation ==
+                Configuration.ORIENTATION_LANDSCAPE;
+
+        initUI(savedInstanceState);
         initToolbar();
     }
 
@@ -37,6 +50,7 @@ public class RecipeDetailsActivity extends AppCompatActivity implements Fragment
         super.onSaveInstanceState(outState);
 
         outState.putParcelable(StepperActivity.RECIPE_KEY, mRecipe);
+        outState.putParcelable(StepperActivity.SELECTED_STEP_KEY, mStep);
     }
 
     @Override
@@ -45,6 +59,8 @@ public class RecipeDetailsActivity extends AppCompatActivity implements Fragment
 
         if (savedInstanceState.containsKey(StepperActivity.RECIPE_KEY))
             mRecipe = savedInstanceState.getParcelable(StepperActivity.RECIPE_KEY);
+        if (savedInstanceState.containsKey(StepperActivity.SELECTED_STEP_KEY))
+            mStep = savedInstanceState.getParcelable(StepperActivity.SELECTED_STEP_KEY);
     }
 
     @Override
@@ -60,7 +76,7 @@ public class RecipeDetailsActivity extends AppCompatActivity implements Fragment
         }
     }
 
-    private void parseData() {
+    private void parseData(Bundle savedInstanceState) {
         Intent startIntent = getIntent();
         if (startIntent == null) {
             finish();
@@ -69,15 +85,39 @@ public class RecipeDetailsActivity extends AppCompatActivity implements Fragment
 
         mRecipe = startIntent.getParcelableExtra(StepperActivity.RECIPE_KEY);
         fragmentRecipeDetailsList.setRecipe(mRecipe);
+
+        mStep = startIntent.getParcelableExtra(StepperActivity.SELECTED_STEP_KEY);
+        stepItemPosition = startIntent.getIntExtra(StepperActivity.CURRENT_STEP_POSITION_KEY, 0);
+
+        if(savedInstanceState != null)
+            mStep = savedInstanceState.getParcelable(StepperActivity.SELECTED_STEP_KEY);
     }
 
-    private void initUI() {
+    private void initUI(Bundle savedInstanceState) {
         fragmentRecipeDetailsList = (FragmentRecipeDetailsList) getSupportFragmentManager()
                 .findFragmentById(R.id.recipe_detail_fragment);
 
-        parseData();
+        parseData(savedInstanceState);
 
         fragmentRecipeDetailsList.setStepClickedListener(this);
+        if (mIsTablet && mLandscape) {
+            mStepDetailFragment = (FragmentStepper) getSupportFragmentManager()
+                    .findFragmentById(R.id.step_detail_fragment);
+
+            fragmentRecipeDetailsList.mBinding.rvMain.scrollToPosition(stepItemPosition);
+            mStepDetailFragment.updateStep(mStep);
+            setDetailsPanel();
+        }
+    }
+
+    private void setDetailsPanel() {
+        if (mStep == null) {
+            mBinding.labelStepNotSelected.setVisibility(View.VISIBLE);
+            findViewById(R.id.step_detail_fragment).setVisibility(View.GONE);
+        } else {
+            mBinding.labelStepNotSelected.setVisibility(View.GONE);
+            findViewById(R.id.step_detail_fragment).setVisibility(View.VISIBLE);
+        }
     }
 
     private void initToolbar() {
@@ -91,13 +131,18 @@ public class RecipeDetailsActivity extends AppCompatActivity implements Fragment
 
     @Override
     public void onClickedStep(int position, BakingStep step) {
-        Intent intent = new Intent(this, StepperActivity.class);
-
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(StepperActivity.RECIPE_KEY, mRecipe);
-        bundle.putParcelable(StepperActivity.SELECTED_STEP_KEY, step);
-        bundle.putInt(StepperActivity.CURRENT_STEP_POSITION_KEY, position);
-        intent.putExtras(bundle);
-        startActivity(intent);
+        mStep = step;
+        if(mIsTablet && mLandscape) {
+            mStepDetailFragment.updateStep(step);
+            setDetailsPanel();
+        } else {
+            Intent intent = new Intent(this, StepperActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putParcelable(StepperActivity.RECIPE_KEY, mRecipe);
+            bundle.putParcelable(StepperActivity.SELECTED_STEP_KEY, step);
+            bundle.putInt(StepperActivity.CURRENT_STEP_POSITION_KEY, position);
+            intent.putExtras(bundle);
+            startActivity(intent);
+        }
     }
 }

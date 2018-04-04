@@ -28,8 +28,6 @@ import com.squareup.picasso.Picasso;
 import com.stepstone.stepper.Step;
 import com.stepstone.stepper.VerificationError;
 
-import timber.log.Timber;
-
 /**
  * Created by Gianni on 03/04/18.
  */
@@ -57,8 +55,11 @@ public class FragmentStepper extends Fragment implements Step {
     }
 
     private void initUI() {
-        if (getArguments().getParcelable(StepperActivity.SELECTED_STEP_KEY) == null) return;
-        step = getArguments().getParcelable(StepperActivity.SELECTED_STEP_KEY);
+        if(getArguments() != null) {
+            if (getArguments().getParcelable(StepperActivity.SELECTED_STEP_KEY) != null) {
+                step = getArguments().getParcelable(StepperActivity.SELECTED_STEP_KEY);
+            }
+        }
 
         initializePlayer();
     }
@@ -121,6 +122,14 @@ public class FragmentStepper extends Fragment implements Step {
         }
     }
 
+    public void updateStep(BakingStep step) {
+        this.step = step;
+
+        if (mExoPlayer != null)
+            mExoPlayer.stop();
+        updateUI();
+    }
+
     private void initializePlayer() {
         mExoPlayer = ExoPlayerFactory.newSimpleInstance(
                 new DefaultRenderersFactory(getActivity()),
@@ -133,9 +142,7 @@ public class FragmentStepper extends Fragment implements Step {
         mExoPlayer.setPlayWhenReady(playWhenReady);
         mExoPlayer.seekTo(currentWindow, playbackPosition);
 
-        Uri uri = Uri.parse("url video da STEP");
-        MediaSource mediaSource = buildMediaSource(uri);
-        mExoPlayer.prepare(mediaSource, true, false);
+        updatePlayer();
     }
 
     private void updatePlayer(){
@@ -151,6 +158,7 @@ public class FragmentStepper extends Fragment implements Step {
             mExoPlayer.setPlayWhenReady(playWhenReady);
             mExoPlayer.seekTo(currentWindow, playbackPosition);
 
+            showVideoView();
         } else if(hasThumbnail) {
             if(step.getThumbnailURL().endsWith(".mp4")){
                 Uri uri = Uri.parse(step.getThumbnailURL());
@@ -167,10 +175,20 @@ public class FragmentStepper extends Fragment implements Step {
                 Picasso.get().load(step.getThumbnailURL()).into(mBinding.stepThumbnail);
             }
         } else {
-            mBinding.labelVideoNotAvailable.setVisibility(View.VISIBLE);
-            mBinding.stepThumbnail.setVisibility(View.GONE);
-            mBinding.playerView.setVisibility(View.GONE);
+            hideVideoView();
         }
+    }
+
+    private void showVideoView() {
+        mBinding.labelVideoNotAvailable.setVisibility(View.GONE);
+        mBinding.stepThumbnail.setVisibility(View.GONE);
+        mBinding.playerView.setVisibility(View.VISIBLE);
+    }
+
+    private void hideVideoView() {
+        mBinding.labelVideoNotAvailable.setVisibility(View.VISIBLE);
+        mBinding.stepThumbnail.setVisibility(View.GONE);
+        mBinding.playerView.setVisibility(View.GONE);
     }
 
     private MediaSource buildMediaSource(Uri uri) {
