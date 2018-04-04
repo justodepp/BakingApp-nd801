@@ -81,6 +81,13 @@ public class BakingResponse implements Parcelable {
         this.image = image;
     }
 
+    public boolean displayEquals(Object obj) {
+        if (! (obj instanceof BakingResponse)) return false;
+
+        BakingResponse other = (BakingResponse) obj;
+        return this.getName().equals(other.getName());
+    }
+
     public String printIngredients() {
         if (getIngredients() == null) return null;
 

@@ -128,4 +128,9 @@ public class FragmentRecipeDetailsList extends Fragment implements RecipeDetails
     public void onClickStepItem(int position, BakingStep step) {
         mStepClicked.onClickedStep(position, step);
     }
+
+    public void updateRecipe(BakingResponse recipe) {
+        mRecipe = recipe;
+        initUI();
+    }
 }

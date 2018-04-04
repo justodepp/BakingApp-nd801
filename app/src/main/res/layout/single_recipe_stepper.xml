@@ -132,10 +132,11 @@
             android:id="@+id/favorite_fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/activity_vertical_margin"
-            android:layout_gravity="bottom|end"
-            app:srcCompat="@drawable/ic_favorite_off"
-            app:fabSize="normal"/>
+            android:layout_margin="@dimen/fab_margin"
+            app:fabSize="normal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@drawable/ic_favorite_off" />
 
     </android.support.constraint.ConstraintLayout>
 

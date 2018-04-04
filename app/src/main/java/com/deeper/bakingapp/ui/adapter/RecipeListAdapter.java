@@ -3,6 +3,7 @@ package com.deeper.bakingapp.ui.adapter;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.support.v4.view.ViewCompat;
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -54,6 +55,48 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
     @Override
     public int getItemCount() {
         return recipe != null ? recipe.size() :  0;
+    }
+
+    public void setList(final ArrayList<BakingResponse> newList) {
+        final ArrayList<BakingResponse> tempList = new ArrayList<>();
+        if (newList != null)
+            tempList.addAll(newList);
+
+        if (recipe == null && tempList.size() > 0) {
+            recipe = tempList;
+            notifyItemRangeInserted(0, recipe.size());
+        }
+        else if (tempList.size() == 0) {
+            recipe = new ArrayList<>();
+            notifyDataSetChanged();
+        }
+        else {
+            DiffUtil.DiffResult result = DiffUtil.calculateDiff(new DiffUtil.Callback() {
+                @Override
+                public int getOldListSize() {
+                    return recipe.size();
+                }
+
+                @Override
+                public int getNewListSize() {
+                    return tempList.size();
+                }
+
+                @Override
+                public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
+                    return recipe.get(oldItemPosition).equals(tempList.get(newItemPosition));
+                }
+
+                @Override
+                public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
+                    BakingResponse newItem = tempList.get(newItemPosition);
+                    BakingResponse oldItem = recipe.get(oldItemPosition);
+                    return oldItem.displayEquals(newItem);
+                }
+            });
+            recipe = tempList;
+            result.dispatchUpdatesTo(this);
+        }
     }
 
     class RecipeHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
