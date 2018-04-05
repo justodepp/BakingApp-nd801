@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 
 import com.deeper.bakingapp.R;
 import com.deeper.bakingapp.data.network.model.BakingResponse;
-import com.deeper.bakingapp.data.network.model.BakingStep;
 import com.deeper.bakingapp.databinding.FragmentStepperLayoutBinding;
 import com.deeper.bakingapp.ui.adapter.MyStepperAdapter;
 import com.stepstone.stepper.StepperLayout;
@@ -25,7 +24,6 @@ public class FragmentStepperLayout extends Fragment implements StepperLayout.Ste
 
     FragmentStepperLayoutBinding mBinding;
 
-    private BakingStep step;
     private BakingResponse mRecipe;
     private int startingStepPosition;
 
@@ -49,19 +47,17 @@ public class FragmentStepperLayout extends Fragment implements StepperLayout.Ste
         startingStepPosition = savedInstanceState != null ? savedInstanceState.getInt(CURRENT_STEP_POSITION_KEY)
                 : getActivity().getIntent().getIntExtra(CURRENT_STEP_POSITION_KEY, 0);
 
-        step = getActivity().getIntent().getParcelableExtra(StepperActivity.SELECTED_STEP_KEY);
         mRecipe = getActivity().getIntent().getParcelableExtra(StepperActivity.RECIPE_KEY);
 
         mBinding.stepperLayout.setAdapter(new MyStepperAdapter(getFragmentManager(),
-                getContext(), step, mRecipe), startingStepPosition);
+                getContext(), mRecipe), startingStepPosition);
         mBinding.stepperLayout.setListener(this);
 
     }
 
-    public void updateStep(BakingStep step, int stepPosition) {
-        this.step = step;
+    public void updateStep(int stepPosition) {
         mBinding.stepperLayout.setAdapter(new MyStepperAdapter(getFragmentManager(),
-                getContext(), step, mRecipe), stepPosition);
+                getContext(), mRecipe), stepPosition);
     }
 
     @Override

@@ -7,7 +7,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 
 import com.deeper.bakingapp.data.network.model.BakingResponse;
-import com.deeper.bakingapp.data.network.model.BakingStep;
 import com.deeper.bakingapp.ui.FragmentStepperStep;
 import com.deeper.bakingapp.ui.StepperActivity;
 import com.stepstone.stepper.Step;
@@ -22,11 +21,9 @@ public class MyStepperAdapter extends AbstractFragmentStepAdapter {
 
     public static final String KEY_STEP_POSITION = "step_position";
     private BakingResponse recipe;
-    private BakingStep step;
 
-    public MyStepperAdapter(FragmentManager fm, Context context, BakingStep step, BakingResponse recipe) {
+    public MyStepperAdapter(FragmentManager fm, Context context, BakingResponse recipe) {
         super(fm, context);
-        this.step = step;
         this.recipe = recipe;
     }
 
@@ -50,7 +47,7 @@ public class MyStepperAdapter extends AbstractFragmentStepAdapter {
     public StepViewModel getViewModel(@IntRange(from = 0) int position) {
         //Override this method to set Step title for the Tabs, not necessary for other stepper types
         return new StepViewModel.Builder(context)
-                .setTitle(step.getShortDescription()) //can be a CharSequence instead
+                .setTitle("") //can be a CharSequence instead
                 .create();
     }
 }

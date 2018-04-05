@@ -110,7 +110,7 @@ public class RecipeDetailsActivity extends AppCompatActivity implements Fragment
                     .findFragmentById(R.id.step_fragment);
 
             fragmentRecipeDetailsList.mBinding.rvMain.scrollToPosition(stepItemPosition);
-            fragmentStepperLayout.updateStep(mStep, stepItemPosition);
+            fragmentStepperLayout.updateStep(stepItemPosition);
             setDetailsPanel();
         }
     }
@@ -139,7 +139,7 @@ public class RecipeDetailsActivity extends AppCompatActivity implements Fragment
         mStep = step;
         stepItemPosition = position;
         if(mIsTablet && mLandscape) {
-            fragmentStepperLayout.updateStep(step, position);
+            fragmentStepperLayout.updateStep(position);
             setDetailsPanel();
         } else {
             Intent intent = new Intent(this, StepperActivity.class);

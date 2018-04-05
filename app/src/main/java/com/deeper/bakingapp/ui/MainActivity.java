@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView mRecyclerView;
     private TextView mTextError;
-    private int firstVisibleItemPosition = -1;
+    //private int firstVisibleItemPosition = -1;
 
     private ArrayList<BakingResponse> recipeList = new ArrayList<>();
     private RecipeListAdapter recipeAdapter;
@@ -93,11 +93,11 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 if (recipeList == null)
                     onRefresh();
                 else if (recipeList.size() > 0) {
-                    if (savedInstanceState.containsKey(KEY_FIRST_VISIBLE_ITEM_POS))
+                    /*if (savedInstanceState.containsKey(KEY_FIRST_VISIBLE_ITEM_POS))
                         firstVisibleItemPosition = savedInstanceState.getInt(KEY_FIRST_VISIBLE_ITEM_POS);
                     else
                         firstVisibleItemPosition = 0;
-                    mRecyclerView.smoothScrollToPosition(firstVisibleItemPosition);
+                    mRecyclerView.smoothScrollToPosition(firstVisibleItemPosition);*/
 
                     RecipeListAdapter adapter = (RecipeListAdapter) mRecyclerView.getAdapter();
                     if (adapter == null) {
@@ -125,7 +125,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         if (mRecipe != null)
             outState.putParcelable(SINGLE_RECIPE_KEY, mRecipe);
 
-        outState.putInt(KEY_FIRST_VISIBLE_ITEM_POS, firstVisibleItemPosition);
+        //outState.putInt(KEY_FIRST_VISIBLE_ITEM_POS, firstVisibleItemPosition);
     }
 
     @Override
@@ -145,14 +145,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         mRecyclerView = findViewById(R.id.rv_main);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-
-                firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
-            }
-        });
 
         mTextError = findViewById(R.id.error_no_connection);
 
