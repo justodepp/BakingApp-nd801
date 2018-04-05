@@ -4,49 +4,42 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Toast;
 
 import com.deeper.bakingapp.R;
 import com.deeper.bakingapp.data.network.model.BakingResponse;
-import com.deeper.bakingapp.data.network.model.BakingStep;
-import com.deeper.bakingapp.databinding.ActivityDetailsStepperBinding;
-import com.deeper.bakingapp.ui.adapter.MyStepperAdapter;
-import com.stepstone.stepper.StepperLayout;
-import com.stepstone.stepper.VerificationError;
+import com.deeper.bakingapp.databinding.ActivityStepperBinding;
 
 /**
  * Created by Gianni on 03/04/18.
  */
 
-public class StepperActivity extends AppCompatActivity implements StepperLayout.StepperListener{
+public class StepperActivity extends AppCompatActivity {
 
     public static final String RECIPE_KEY = "recipe";
     public static final String SELECTED_STEP_KEY = "step_selected";
     public static final String CURRENT_STEP_POSITION_KEY = "position";
 
-    ActivityDetailsStepperBinding mBinding;
+    ActivityStepperBinding mBinding;
+    FragmentStepperLayout fragmentStepper;
 
     private BakingResponse mRecipe;
-    private BakingStep step;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_details_stepper);
+        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_stepper);
 
         mRecipe = getIntent().getParcelableExtra(RECIPE_KEY);
-        step = getIntent().getParcelableExtra(SELECTED_STEP_KEY);
-
-        int startingStepPosition = savedInstanceState != null ? savedInstanceState.getInt(CURRENT_STEP_POSITION_KEY)
-                : getIntent().getIntExtra(CURRENT_STEP_POSITION_KEY, 0);
 
         initToolbar();
 
-        mBinding.stepperLayout.setAdapter(new MyStepperAdapter(getSupportFragmentManager(),
-                this, step, mRecipe), startingStepPosition);
-        mBinding.stepperLayout.setListener(this);
+        initFragment();
+    }
+
+    private void initFragment() {
+        fragmentStepper = (FragmentStepperLayout) getSupportFragmentManager()
+                .findFragmentById(R.id.step_fragment);
     }
 
     private void initToolbar() {
@@ -60,7 +53,6 @@ public class StepperActivity extends AppCompatActivity implements StepperLayout.
 
     @Override
     protected  void onSaveInstanceState(Bundle outState) {
-        outState.putInt(CURRENT_STEP_POSITION_KEY, mBinding.stepperLayout.getCurrentStepPosition());
         super.onSaveInstanceState(outState);
     }
 
@@ -75,25 +67,5 @@ public class StepperActivity extends AppCompatActivity implements StepperLayout.
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-    @Override
-    public void onCompleted(View completeButton) {
-        finish();
-    }
-
-    @Override
-    public void onError(VerificationError verificationError) {
-        Toast.makeText(this, "onError! -> " + verificationError.getErrorMessage(), Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onStepSelected(int newStepPosition) {
-        Toast.makeText(this, "onStepSelected! -> " + newStepPosition, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onReturn() {
-        finish();
     }
 }

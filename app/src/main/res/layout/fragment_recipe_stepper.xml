@@ -126,7 +126,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/label_steps"
             app:layout_constraintBottom_toBottomOf="parent"
-            tools:listitem="@layout/single_recipe_item_list" />
+            tools:listitem="@layout/fragment_recipe_stepper_item_list" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/favorite_fab"

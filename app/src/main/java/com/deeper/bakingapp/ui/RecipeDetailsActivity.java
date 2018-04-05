@@ -21,7 +21,7 @@ public class RecipeDetailsActivity extends AppCompatActivity implements Fragment
 
     ActivityRecipeStepperBinding mBinding;
     FragmentRecipeDetailsList fragmentRecipeDetailsList;
-    FragmentStepper mStepDetailFragment;
+    FragmentStepperLayout fragmentStepperLayout;
 
     private BakingResponse mRecipe;
     private BakingStep mStep;
@@ -52,6 +52,7 @@ public class RecipeDetailsActivity extends AppCompatActivity implements Fragment
 
         outState.putParcelable(StepperActivity.RECIPE_KEY, mRecipe);
         outState.putParcelable(StepperActivity.SELECTED_STEP_KEY, mStep);
+        outState.putInt(StepperActivity.CURRENT_STEP_POSITION_KEY, stepItemPosition);
     }
 
     @Override
@@ -62,6 +63,8 @@ public class RecipeDetailsActivity extends AppCompatActivity implements Fragment
             mRecipe = savedInstanceState.getParcelable(StepperActivity.RECIPE_KEY);
         if (savedInstanceState.containsKey(StepperActivity.SELECTED_STEP_KEY))
             mStep = savedInstanceState.getParcelable(StepperActivity.SELECTED_STEP_KEY);
+        if (savedInstanceState.containsKey(StepperActivity.CURRENT_STEP_POSITION_KEY))
+            stepItemPosition = savedInstanceState.getInt(StepperActivity.CURRENT_STEP_POSITION_KEY);
     }
 
     @Override
@@ -89,8 +92,10 @@ public class RecipeDetailsActivity extends AppCompatActivity implements Fragment
         mStep = startIntent.getParcelableExtra(StepperActivity.SELECTED_STEP_KEY);
         stepItemPosition = startIntent.getIntExtra(StepperActivity.CURRENT_STEP_POSITION_KEY, 0);
 
-        if(savedInstanceState != null)
+        if(savedInstanceState != null) {
             mStep = savedInstanceState.getParcelable(StepperActivity.SELECTED_STEP_KEY);
+            stepItemPosition = savedInstanceState.getInt(StepperActivity.CURRENT_STEP_POSITION_KEY);
+        }
     }
 
     private void initUI() {
@@ -99,12 +104,13 @@ public class RecipeDetailsActivity extends AppCompatActivity implements Fragment
         fragmentRecipeDetailsList.setRecipe(mRecipe);
 
         fragmentRecipeDetailsList.setStepClickedListener(this);
+
         if (mIsTablet && mLandscape) {
-            mStepDetailFragment = (FragmentStepper) getSupportFragmentManager()
-                    .findFragmentById(R.id.step_detail_fragment);
+            fragmentStepperLayout = (FragmentStepperLayout) getSupportFragmentManager()
+                    .findFragmentById(R.id.step_fragment);
 
             fragmentRecipeDetailsList.mBinding.rvMain.scrollToPosition(stepItemPosition);
-            mStepDetailFragment.updateStep(mStep);
+            fragmentStepperLayout.updateStep(mStep, stepItemPosition);
             setDetailsPanel();
         }
     }
@@ -131,8 +137,9 @@ public class RecipeDetailsActivity extends AppCompatActivity implements Fragment
     @Override
     public void onClickedStep(int position, BakingStep step) {
         mStep = step;
+        stepItemPosition = position;
         if(mIsTablet && mLandscape) {
-            mStepDetailFragment.updateStep(step);
+            fragmentStepperLayout.updateStep(step, position);
             setDetailsPanel();
         } else {
             Intent intent = new Intent(this, StepperActivity.class);

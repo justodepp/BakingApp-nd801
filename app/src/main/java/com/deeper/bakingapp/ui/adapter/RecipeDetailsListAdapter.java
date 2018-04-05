@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 
 import com.deeper.bakingapp.R;
 import com.deeper.bakingapp.data.network.model.BakingStep;
-import com.deeper.bakingapp.databinding.SingleRecipeItemListBinding;
+import com.deeper.bakingapp.databinding.FragmentRecipeStepperItemListBinding;
 
 import java.util.ArrayList;
 
@@ -37,8 +37,8 @@ public class RecipeDetailsListAdapter extends RecyclerView.Adapter<RecipeDetails
     @Override
     public RecipeHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        SingleRecipeItemListBinding mBinding = DataBindingUtil.inflate(inflater,
-                R.layout.single_recipe_item_list, parent, false);
+        FragmentRecipeStepperItemListBinding mBinding = DataBindingUtil.inflate(inflater,
+                R.layout.fragment_recipe_stepper_item_list, parent, false);
 
         return new RecipeHolder(mBinding);
     }
@@ -55,9 +55,9 @@ public class RecipeDetailsListAdapter extends RecyclerView.Adapter<RecipeDetails
 
     class RecipeHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private final SingleRecipeItemListBinding mBinding;
+        private final FragmentRecipeStepperItemListBinding mBinding;
 
-        RecipeHolder(SingleRecipeItemListBinding binding) {
+        RecipeHolder(FragmentRecipeStepperItemListBinding binding) {
             super(binding.getRoot());
             this.mBinding = binding;
 

@@ -32,7 +32,7 @@ import com.stepstone.stepper.VerificationError;
  * Created by Gianni on 03/04/18.
  */
 
-public class FragmentStepper extends Fragment implements Step {
+public class FragmentStepperStep extends Fragment implements Step {
 
     private static final String CURRENT_VIDEO_POSITION = "video_position";
 

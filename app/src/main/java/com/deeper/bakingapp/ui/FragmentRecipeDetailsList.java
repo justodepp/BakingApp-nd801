@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 import com.deeper.bakingapp.R;
 import com.deeper.bakingapp.data.network.model.BakingResponse;
 import com.deeper.bakingapp.data.network.model.BakingStep;
-import com.deeper.bakingapp.databinding.SingleRecipeStepperBinding;
+import com.deeper.bakingapp.databinding.FragmentRecipeStepperBinding;
 import com.deeper.bakingapp.ui.adapter.RecipeDetailsListAdapter;
 import com.squareup.picasso.Picasso;
 
@@ -28,7 +28,7 @@ import java.util.ArrayList;
  */
 public class FragmentRecipeDetailsList extends Fragment implements RecipeDetailsListAdapter.OnStepClickListener {
 
-    SingleRecipeStepperBinding mBinding;
+    FragmentRecipeStepperBinding mBinding;
 
     private BakingResponse mRecipe;
 
@@ -50,7 +50,7 @@ public class FragmentRecipeDetailsList extends Fragment implements RecipeDetails
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        mBinding = DataBindingUtil.inflate(inflater, R.layout.single_recipe_stepper,
+        mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_recipe_stepper,
                 container, false);
 
         return mBinding.getRoot();

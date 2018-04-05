@@ -8,7 +8,7 @@ import android.support.v4.app.FragmentManager;
 
 import com.deeper.bakingapp.data.network.model.BakingResponse;
 import com.deeper.bakingapp.data.network.model.BakingStep;
-import com.deeper.bakingapp.ui.FragmentStepper;
+import com.deeper.bakingapp.ui.FragmentStepperStep;
 import com.deeper.bakingapp.ui.StepperActivity;
 import com.stepstone.stepper.Step;
 import com.stepstone.stepper.adapter.AbstractFragmentStepAdapter;
@@ -32,7 +32,7 @@ public class MyStepperAdapter extends AbstractFragmentStepAdapter {
 
     @Override
     public Step createStep(int position) {
-        final FragmentStepper step = new FragmentStepper();
+        final FragmentStepperStep step = new FragmentStepperStep();
         Bundle b = new Bundle();
         b.putInt(KEY_STEP_POSITION, position);
         b.putParcelable(StepperActivity.SELECTED_STEP_KEY, recipe.getSteps().get(position));
