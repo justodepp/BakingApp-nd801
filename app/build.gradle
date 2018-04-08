@@ -27,6 +27,7 @@ ext {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "com.android.support:support-v4:${supportLibVersion}"
     implementation "com.android.support:appcompat-v7:${supportLibVersion}"
     implementation "com.android.support:design:${supportLibVersion}"
     implementation "com.android.support:recyclerview-v7:${supportLibVersion}"
@@ -35,10 +36,9 @@ dependencies {
 
 
     // Retrofit
-    implementation 'com.android.support:support-v4:27.1.0'
-    compile "com.squareup.retrofit2:retrofit:${retrofitVersion}"
-    compile "com.squareup.retrofit2:converter-gson:${retrofitVersion}"
-    compile "com.squareup.retrofit2:adapter-rxjava2:${retrofitVersion}"
+    implementation "com.squareup.retrofit2:retrofit:${retrofitVersion}"
+    implementation "com.squareup.retrofit2:converter-gson:${retrofitVersion}"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:${retrofitVersion}"
 
     // Test
     testImplementation 'junit:junit:4.12'
@@ -48,8 +48,8 @@ dependencies {
     // Third Part Library
     implementation 'de.hdodenhof:circleimageview:2.2.0'
     implementation 'com.google.android.exoplayer:exoplayer:2.6.1'
-    compile 'com.stepstone.stepper:material-stepper:4.3.1'
+    implementation 'com.stepstone.stepper:material-stepper:4.3.1'
     implementation 'com.squareup.picasso:picasso:2.71828'
-    compile 'com.facebook.stetho:stetho:1.5.0'
+    implementation 'com.facebook.stetho:stetho:1.5.0'
     implementation 'com.jakewharton.timber:timber:4.7.0'
 }
