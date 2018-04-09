@@ -4,6 +4,7 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.PrimaryKey;
+import android.content.ContentValues;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -11,8 +12,13 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import static android.arch.persistence.room.ForeignKey.CASCADE;
+import static com.deeper.bakingapp.data.db.contentprovider.StepContract.StepEntry.COLUMN_DESCRIPTION;
 import static com.deeper.bakingapp.data.db.contentprovider.StepContract.StepEntry.COLUMN_ID;
 import static com.deeper.bakingapp.data.db.contentprovider.StepContract.StepEntry.COLUMN_RECIPE_ID;
+import static com.deeper.bakingapp.data.db.contentprovider.StepContract.StepEntry.COLUMN_SHORT_DESCRIPTION;
+import static com.deeper.bakingapp.data.db.contentprovider.StepContract.StepEntry.COLUMN_STEP_ID;
+import static com.deeper.bakingapp.data.db.contentprovider.StepContract.StepEntry.COLUMN_THUMBNAIL_URL;
+import static com.deeper.bakingapp.data.db.contentprovider.StepContract.StepEntry.COLUMN_VIDEO_URL;
 import static com.deeper.bakingapp.data.db.contentprovider.StepContract.StepEntry.TABLE_NAME;
 
 /**
@@ -118,6 +124,29 @@ public class Step implements Parcelable {
     }
 
     public Step() {
+    }
+
+    public static Step getContentValues(ContentValues origin) {
+        if (origin == null) return null;
+
+        final Step step = new Step();
+
+        if (origin.containsKey(COLUMN_ID))
+            step.setId(origin.getAsInteger(COLUMN_ID));
+        if (origin.containsKey(COLUMN_STEP_ID))
+            step.setStepId(origin.getAsInteger(COLUMN_STEP_ID));
+        if (origin.containsKey(COLUMN_RECIPE_ID))
+            step.setRecipeId(origin.getAsInteger(COLUMN_RECIPE_ID));
+        if (origin.containsKey(COLUMN_DESCRIPTION))
+            step.setDescription(origin.getAsString(COLUMN_DESCRIPTION));
+        if (origin.containsKey(COLUMN_SHORT_DESCRIPTION))
+            step.setShortDescription(origin.getAsString(COLUMN_SHORT_DESCRIPTION));
+        if (origin.containsKey(COLUMN_VIDEO_URL))
+            step.setVideoURL(origin.getAsString(COLUMN_VIDEO_URL));
+        if (origin.containsKey(COLUMN_THUMBNAIL_URL))
+            step.setThumbnailURL(origin.getAsString(COLUMN_THUMBNAIL_URL));
+
+        return step;
     }
 
     @Override

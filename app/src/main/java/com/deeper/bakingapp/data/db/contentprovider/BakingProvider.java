@@ -1,12 +1,21 @@
 package com.deeper.bakingapp.data.db.contentprovider;
 
 import android.content.ContentProvider;
+import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+
+import com.deeper.bakingapp.data.db.BakingRoomDatabase;
+import com.deeper.bakingapp.data.model.Ingredient;
+import com.deeper.bakingapp.data.model.Recipe;
+import com.deeper.bakingapp.data.model.Step;
+
+import java.util.ArrayList;
 
 public class BakingProvider extends ContentProvider {
 
@@ -40,15 +49,47 @@ public class BakingProvider extends ContentProvider {
         return matcher;
     }
 
+    private BakingRoomDatabase bakingDatabase;
+
     @Override
     public boolean onCreate() {
-        return false;
+        if (bakingDatabase == null) bakingDatabase = BakingRoomDatabase.getDatabase(getContext());
+        return true;
     }
 
     @Nullable
     @Override
     public Cursor query(@NonNull Uri uri, @Nullable String[] strings, @Nullable String s, @Nullable String[] strings1, @Nullable String s1) {
-        return null;
+        final Context context = getContext();
+        if (context == null) return null;
+
+        Cursor cursor;
+        String id;
+        switch (sUriMatcher.match(uri)) {
+            case CODE_RECIPES:
+            cursor = bakingDatabase.daoRecipe().getCursorRecipes();
+            cursor.setNotificationUri(context.getContentResolver(), uri);
+            break;
+
+            case CODE_INGREDIENTS:
+            id = uri.getQueryParameter(IngredientContract.IngredientEntry.COLUMN_RECIPE_ID);
+            cursor = bakingDatabase.daoIngredient()
+                    .getCursorRecipeIngredients(Integer.valueOf(id));
+            cursor.setNotificationUri(context.getContentResolver(), uri);
+            break;
+
+            case CODE_STEPS:
+            id = uri.getQueryParameter(StepContract.StepEntry.COLUMN_RECIPE_ID);
+            cursor = bakingDatabase.daoStep()
+                    .getCursorRecipeSteps(Integer.valueOf(id));
+            cursor.setNotificationUri(context.getContentResolver(), uri);
+            break;
+
+            default:
+            throw new IllegalArgumentException("Unknown URI: " + uri);
+        }
+
+        return cursor;
     }
 
     @Nullable
@@ -60,12 +101,88 @@ public class BakingProvider extends ContentProvider {
     @Nullable
     @Override
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues contentValues) {
-        return null;
+        final Context context = getContext();
+        if (context == null) {
+            return null;
+        }
+
+        long id;
+        switch (sUriMatcher.match(uri)) {
+            case CODE_RECIPE_WITH_ID:
+                id = bakingDatabase.daoRecipe()
+                        .addRecipe(Recipe.getContentValues(contentValues));
+                context.getContentResolver().notifyChange(uri, null);
+                return ContentUris.withAppendedId(uri, id);
+            case CODE_INGREDIENT_WITH_ID:
+                id = bakingDatabase.daoIngredient()
+                        .addIngredient(Ingredient.getContentValues(contentValues));
+                context.getContentResolver().notifyChange(uri, null);
+                return ContentUris.withAppendedId(uri, id);
+            case CODE_STEP_WITH_ID:
+                id = bakingDatabase.daoStep()
+                        .addStep(Step.getContentValues(contentValues));
+                context.getContentResolver().notifyChange(uri, null);
+                return ContentUris.withAppendedId(uri, id);
+            default:
+                throw new IllegalArgumentException("Unknown URI: " + uri);
+        }
+    }
+
+    @Override
+    public int bulkInsert(@NonNull Uri uri, @NonNull ContentValues[] valuesArray) {
+        final Context context = getContext();
+        if (context == null) {
+            return 0;
+        }
+
+        switch (sUriMatcher.match(uri)) {
+            case CODE_INGREDIENTS:
+                final ArrayList<Ingredient> ingredients = new ArrayList<>();
+                for (ContentValues ingredient : valuesArray)
+                    ingredients.add(Ingredient.getContentValues(ingredient));
+
+                bakingDatabase.daoIngredient().addIngredients(ingredients);
+                return valuesArray.length;
+            case CODE_STEPS:
+                final ArrayList<Step> steps = new ArrayList<>();
+                for (ContentValues step : valuesArray)
+                    steps.add(Step.getContentValues(step));
+
+                bakingDatabase.daoStep().addSteps(steps);
+                return valuesArray.length;
+            default:
+                throw new IllegalArgumentException("Unknown URI: " + uri);
+        }
     }
 
     @Override
     public int delete(@NonNull Uri uri, @Nullable String s, @Nullable String[] strings) {
-        return 0;
+        final Context context = getContext();
+        if (context == null) return 0;
+
+        int count;
+        String id;
+        switch (sUriMatcher.match(uri)) {
+            case CODE_RECIPES:
+                count = bakingDatabase.daoRecipe()
+                        .deleteRecipe((int) ContentUris.parseId(uri));
+                context.getContentResolver().notifyChange(uri, null);
+                return count;
+            case CODE_INGREDIENTS:
+                id = uri.getQueryParameter(IngredientContract.IngredientEntry.COLUMN_RECIPE_ID);
+                count = bakingDatabase.daoIngredient()
+                        .deleteRecipeIngredients(Integer.parseInt(id));
+                context.getContentResolver().notifyChange(uri, null);
+                return count;
+            case CODE_STEPS:
+                id = uri.getQueryParameter(StepContract.StepEntry.COLUMN_RECIPE_ID);
+                count = bakingDatabase.daoStep()
+                        .deleteRecipeSteps(Integer.parseInt(id));
+                context.getContentResolver().notifyChange(uri, null);
+                return count;
+            default:
+                throw new IllegalArgumentException("Unknown URI: " + uri);
+        }
     }
 
     @Override

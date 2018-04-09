@@ -17,7 +17,7 @@ public abstract class BakingRoomDatabase extends RoomDatabase {
 
     private static BakingRoomDatabase INSTANCE;
 
-    static BakingRoomDatabase getDatabase(final Context context) {
+    public static BakingRoomDatabase getDatabase(final Context context) {
         if (INSTANCE == null) {
             synchronized (BakingRoomDatabase.class) {
                 if (INSTANCE == null) {

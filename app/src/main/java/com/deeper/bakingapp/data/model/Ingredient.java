@@ -4,6 +4,7 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.PrimaryKey;
+import android.content.ContentValues;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -100,6 +101,25 @@ public class Ingredient implements Parcelable {
     }
 
     public Ingredient() {
+    }
+
+    public static Ingredient getContentValues(ContentValues origin) {
+        if (origin == null) return null;
+
+        final Ingredient ingredient = new Ingredient();
+
+        if (origin.containsKey(COLUMN_ID))
+            ingredient.setId(origin.getAsInteger(COLUMN_ID));
+        if (origin.containsKey(COLUMN_RECIPE_ID))
+            ingredient.setRecipeId(origin.getAsInteger(COLUMN_RECIPE_ID));
+        if (origin.containsKey(COLUMN_QUANTITY))
+            ingredient.setQuantity(origin.getAsDouble(COLUMN_QUANTITY));
+        if (origin.containsKey(COLUMN_MEASURE))
+            ingredient.setMeasure(origin.getAsString(COLUMN_MEASURE));
+        if (origin.containsKey(COLUMN_INGREDIENT))
+            ingredient.setIngredient(origin.getAsString(COLUMN_INGREDIENT));
+
+        return ingredient;
     }
 
     @Override

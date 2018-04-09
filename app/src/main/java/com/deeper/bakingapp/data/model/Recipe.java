@@ -8,6 +8,7 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
+import android.content.ContentValues;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -17,7 +18,9 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 import static com.deeper.bakingapp.data.db.contentprovider.RecipeContract.RecipeEntry.COLUMN_ID;
+import static com.deeper.bakingapp.data.db.contentprovider.RecipeContract.RecipeEntry.COLUMN_IMAGE;
 import static com.deeper.bakingapp.data.db.contentprovider.RecipeContract.RecipeEntry.COLUMN_NAME;
+import static com.deeper.bakingapp.data.db.contentprovider.RecipeContract.RecipeEntry.COLUMN_SERVINGS;
 import static com.deeper.bakingapp.data.db.contentprovider.RecipeContract.RecipeEntry.TABLE_NAME;
 
 @Entity(tableName = TABLE_NAME)
@@ -137,6 +140,23 @@ public class Recipe implements Parcelable {
     }
 
     public Recipe() {
+    }
+
+    public static Recipe getContentValues(ContentValues origin) {
+        if (origin == null) return null;
+
+        final Recipe recipe = new Recipe();
+
+        if (origin.containsKey(COLUMN_ID))
+            recipe.setId(origin.getAsInteger(COLUMN_ID));
+        if (origin.containsKey(COLUMN_NAME))
+            recipe.setName(origin.getAsString(COLUMN_NAME));
+        if (origin.containsKey(COLUMN_SERVINGS))
+            recipe.setServings(origin.getAsInteger(COLUMN_SERVINGS));
+        if (origin.containsKey(COLUMN_IMAGE))
+            recipe.setImage(origin.getAsString(COLUMN_IMAGE));
+
+        return recipe;
     }
 
     @Override
