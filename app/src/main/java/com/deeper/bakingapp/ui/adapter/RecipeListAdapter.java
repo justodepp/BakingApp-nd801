@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.deeper.bakingapp.R;
-import com.deeper.bakingapp.data.network.model.BakingResponse;
+import com.deeper.bakingapp.data.model.Recipe;
 import com.deeper.bakingapp.databinding.BakingRecipeItemListBinding;
 import com.squareup.picasso.Picasso;
 
@@ -24,15 +24,15 @@ import java.util.ArrayList;
 public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.RecipeHolder>{
 
     private Context context;
-    private ArrayList<BakingResponse> recipe;
+    private ArrayList<Recipe> recipe;
 
     private final RecipeClickListener mRecipeClickListener;
 
     public interface RecipeClickListener {
-        void onClickRecipeItem(BakingResponse recipe);
+        void onClickRecipeItem(Recipe recipe);
     }
 
-    public RecipeListAdapter(Context context, ArrayList<BakingResponse> recipe, RecipeClickListener recipeClickListener){
+    public RecipeListAdapter(Context context, ArrayList<Recipe> recipe, RecipeClickListener recipeClickListener){
         this.context = context;
         this.recipe = recipe;
         mRecipeClickListener = recipeClickListener;
@@ -57,8 +57,8 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
         return recipe != null ? recipe.size() :  0;
     }
 
-    public void setList(final ArrayList<BakingResponse> newList) {
-        final ArrayList<BakingResponse> tempList = new ArrayList<>();
+    public void setList(final ArrayList<Recipe> newList) {
+        final ArrayList<Recipe> tempList = new ArrayList<>();
         if (newList != null)
             tempList.addAll(newList);
 
@@ -89,8 +89,8 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
 
                 @Override
                 public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-                    BakingResponse newItem = tempList.get(newItemPosition);
-                    BakingResponse oldItem = recipe.get(oldItemPosition);
+                    Recipe newItem = tempList.get(newItemPosition);
+                    Recipe oldItem = recipe.get(oldItemPosition);
                     return oldItem.displayEquals(newItem);
                 }
             });

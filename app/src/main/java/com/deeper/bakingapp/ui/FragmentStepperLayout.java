@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.deeper.bakingapp.R;
-import com.deeper.bakingapp.data.network.model.BakingResponse;
+import com.deeper.bakingapp.data.model.Recipe;
 import com.deeper.bakingapp.databinding.FragmentStepperLayoutBinding;
 import com.deeper.bakingapp.ui.adapter.MyStepperAdapter;
 import com.stepstone.stepper.StepperLayout;
@@ -24,7 +24,7 @@ public class FragmentStepperLayout extends Fragment implements StepperLayout.Ste
 
     FragmentStepperLayoutBinding mBinding;
 
-    private BakingResponse mRecipe;
+    private Recipe mRecipe;
     private int startingStepPosition;
 
     public FragmentStepperLayout() {

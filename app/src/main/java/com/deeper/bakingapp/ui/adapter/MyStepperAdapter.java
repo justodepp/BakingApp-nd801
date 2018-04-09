@@ -6,7 +6,7 @@ import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 
-import com.deeper.bakingapp.data.network.model.BakingResponse;
+import com.deeper.bakingapp.data.model.Recipe;
 import com.deeper.bakingapp.ui.FragmentStepperStep;
 import com.deeper.bakingapp.ui.StepperActivity;
 import com.stepstone.stepper.Step;
@@ -20,9 +20,9 @@ import com.stepstone.stepper.viewmodel.StepViewModel;
 public class MyStepperAdapter extends AbstractFragmentStepAdapter {
 
     public static final String KEY_STEP_POSITION = "step_position";
-    private BakingResponse recipe;
+    private Recipe recipe;
 
-    public MyStepperAdapter(FragmentManager fm, Context context, BakingResponse recipe) {
+    public MyStepperAdapter(FragmentManager fm, Context context, Recipe recipe) {
         super(fm, context);
         this.recipe = recipe;
     }

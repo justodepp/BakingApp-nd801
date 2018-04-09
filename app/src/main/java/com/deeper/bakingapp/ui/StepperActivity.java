@@ -6,7 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import com.deeper.bakingapp.R;
-import com.deeper.bakingapp.data.network.model.BakingResponse;
+import com.deeper.bakingapp.data.model.Recipe;
 import com.deeper.bakingapp.databinding.ActivityStepperBinding;
 
 /**
@@ -22,7 +22,7 @@ public class StepperActivity extends AppCompatActivity {
     ActivityStepperBinding mBinding;
     FragmentStepperLayout fragmentStepper;
 
-    private BakingResponse mRecipe;
+    private Recipe mRecipe;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -13,8 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.deeper.bakingapp.R;
-import com.deeper.bakingapp.data.network.model.BakingResponse;
-import com.deeper.bakingapp.data.network.model.BakingStep;
+import com.deeper.bakingapp.data.model.Recipe;
+import com.deeper.bakingapp.data.model.Step;
 import com.deeper.bakingapp.databinding.FragmentRecipeStepperBinding;
 import com.deeper.bakingapp.ui.adapter.RecipeDetailsListAdapter;
 import com.squareup.picasso.Picasso;
@@ -30,12 +30,12 @@ public class FragmentRecipeDetailsList extends Fragment implements RecipeDetails
 
     FragmentRecipeStepperBinding mBinding;
 
-    private BakingResponse mRecipe;
+    private Recipe mRecipe;
 
     private OnStepClicked mStepClicked;
 
     public interface OnStepClicked {
-        void onClickedStep(int position, BakingStep step);
+        void onClickedStep(int position, Step step);
     }
 
     public void setStepClickedListener(OnStepClicked listener) {
@@ -61,7 +61,7 @@ public class FragmentRecipeDetailsList extends Fragment implements RecipeDetails
         super.onViewCreated(view, savedInstanceState);
     }
 
-    public void setRecipe(BakingResponse recipe) {
+    public void setRecipe(Recipe recipe) {
         mRecipe = recipe;
         initUI();
     }
@@ -78,7 +78,7 @@ public class FragmentRecipeDetailsList extends Fragment implements RecipeDetails
         );
         mBinding.rvMain.setHasFixedSize(true);
 
-        RecipeDetailsListAdapter listAdapter = new RecipeDetailsListAdapter(getActivity(), (ArrayList<BakingStep>) mRecipe.getSteps(), this);
+        RecipeDetailsListAdapter listAdapter = new RecipeDetailsListAdapter(getActivity(), (ArrayList<Step>) mRecipe.getSteps(), this);
         mBinding.rvMain.setAdapter(listAdapter);
     }
 
@@ -125,11 +125,11 @@ public class FragmentRecipeDetailsList extends Fragment implements RecipeDetails
     }
 
     @Override
-    public void onClickStepItem(int position, BakingStep step) {
+    public void onClickStepItem(int position, Step step) {
         mStepClicked.onClickedStep(position, step);
     }
 
-    public void updateRecipe(BakingResponse recipe) {
+    public void updateRecipe(Recipe recipe) {
         mRecipe = recipe;
         initUI();
     }

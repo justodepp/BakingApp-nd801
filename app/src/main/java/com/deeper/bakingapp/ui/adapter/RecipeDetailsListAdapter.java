@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.deeper.bakingapp.R;
-import com.deeper.bakingapp.data.network.model.BakingStep;
+import com.deeper.bakingapp.data.model.Step;
 import com.deeper.bakingapp.databinding.FragmentRecipeStepperItemListBinding;
 
 import java.util.ArrayList;
@@ -20,15 +20,15 @@ import java.util.ArrayList;
 public class RecipeDetailsListAdapter extends RecyclerView.Adapter<RecipeDetailsListAdapter.RecipeHolder>{
 
     private Context context;
-    private ArrayList<BakingStep> steps;
+    private ArrayList<Step> steps;
 
     private final OnStepClickListener mStepClickListener;
 
     public interface OnStepClickListener {
-        void onClickStepItem(int position, BakingStep step);
+        void onClickStepItem(int position, Step step);
     }
 
-    public RecipeDetailsListAdapter(Context context, ArrayList<BakingStep> steps, OnStepClickListener recipeClickListener){
+    public RecipeDetailsListAdapter(Context context, ArrayList<Step> steps, OnStepClickListener recipeClickListener){
         this.context = context;
         this.steps = steps;
         mStepClickListener = recipeClickListener;
@@ -65,7 +65,7 @@ public class RecipeDetailsListAdapter extends RecyclerView.Adapter<RecipeDetails
         }
 
         public void bind(int position){
-            mBinding.txtStepNumber.setText(String.valueOf(steps.get(position).getId()));
+            mBinding.txtStepNumber.setText(String.valueOf(steps.get(position).getStepId()));
             mBinding.txtStepName.setText(steps.get(position).getShortDescription());
         }
 

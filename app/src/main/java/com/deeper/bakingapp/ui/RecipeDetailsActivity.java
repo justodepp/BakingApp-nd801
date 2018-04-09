@@ -9,8 +9,8 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.deeper.bakingapp.R;
-import com.deeper.bakingapp.data.network.model.BakingResponse;
-import com.deeper.bakingapp.data.network.model.BakingStep;
+import com.deeper.bakingapp.data.model.Recipe;
+import com.deeper.bakingapp.data.model.Step;
 import com.deeper.bakingapp.databinding.ActivityRecipeStepperBinding;
 
 /**
@@ -23,8 +23,8 @@ public class RecipeDetailsActivity extends AppCompatActivity implements Fragment
     FragmentRecipeDetailsList fragmentRecipeDetailsList;
     FragmentStepperLayout fragmentStepperLayout;
 
-    private BakingResponse mRecipe;
-    private BakingStep mStep;
+    private Recipe mRecipe;
+    private Step mStep;
 
     private int stepItemPosition = -1;
 
@@ -135,7 +135,7 @@ public class RecipeDetailsActivity extends AppCompatActivity implements Fragment
     }
 
     @Override
-    public void onClickedStep(int position, BakingStep step) {
+    public void onClickedStep(int position, Step step) {
         mStep = step;
         stepItemPosition = position;
         if(mIsTablet && mLandscape) {

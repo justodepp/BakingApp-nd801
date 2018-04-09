@@ -14,10 +14,10 @@ import android.widget.TextView;
 
 import com.deeper.bakingapp.BuildConfig;
 import com.deeper.bakingapp.R;
+import com.deeper.bakingapp.data.model.Recipe;
+import com.deeper.bakingapp.data.model.Step;
 import com.deeper.bakingapp.data.network.api.ApiEndPointHandler;
 import com.deeper.bakingapp.data.network.api.ApiEndpointInterfaces;
-import com.deeper.bakingapp.data.network.model.BakingResponse;
-import com.deeper.bakingapp.data.network.model.BakingStep;
 import com.deeper.bakingapp.databinding.ActivityMainBinding;
 import com.deeper.bakingapp.ui.adapter.RecipeListAdapter;
 import com.deeper.bakingapp.utils.Utility;
@@ -44,10 +44,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     private TextView mTextError;
     //private int firstVisibleItemPosition = -1;
 
-    private ArrayList<BakingResponse> recipeList = new ArrayList<>();
+    private ArrayList<Recipe> recipeList = new ArrayList<>();
     private RecipeListAdapter recipeAdapter;
 
-    private BakingResponse mRecipe;
+    private Recipe mRecipe;
 
     private FragmentRecipeDetailsList fragmentRecipeDetailsList;
 
@@ -172,11 +172,11 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         showProgressBar();
 
         ApiEndpointInterfaces apiService = ApiEndPointHandler.getApiService(this, false);
-        Call<BakingResponse[]> responseBaking = apiService.getDesserts();
+        Call<Recipe[]> responseBaking = apiService.getDesserts();
 
-        responseBaking.enqueue(new Callback<BakingResponse[]>() {
+        responseBaking.enqueue(new Callback<Recipe[]>() {
             @Override
-            public void onResponse(Call<BakingResponse[]> call, Response<BakingResponse[]> response) {
+            public void onResponse(Call<Recipe[]> call, Response<Recipe[]> response) {
                 if (response.isSuccessful()) {
                     for (int i = 0; i < response.body().length; i++) {
                         recipeList.add(response.body()[i]);
@@ -190,7 +190,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             }
 
             @Override
-            public void onFailure(Call<BakingResponse[]> call, Throwable t) {
+            public void onFailure(Call<Recipe[]> call, Throwable t) {
                 hideProgressBar();
 
                 Snackbar.make(mBinding.coordinatorView, R.string.error_internet_connection,
@@ -227,7 +227,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     }
 
     @Override
-    public void onClickRecipeItem(BakingResponse recipe) {
+    public void onClickRecipeItem(Recipe recipe) {
         mRecipe = recipe;
 
         if (mIsTablet && mLandscape) {
@@ -242,7 +242,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     }
 
     @Override
-    public void onClickedStep(int position, BakingStep step) {
+    public void onClickedStep(int position, Step step) {
         Intent intent = new Intent(this, RecipeDetailsActivity.class);
         Bundle bundle = new Bundle();
         bundle.putParcelable(StepperActivity.RECIPE_KEY, mRecipe);

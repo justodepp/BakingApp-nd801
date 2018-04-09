@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 
 import com.deeper.bakingapp.BakingApp;
 import com.deeper.bakingapp.R;
-import com.deeper.bakingapp.data.network.model.BakingStep;
+import com.deeper.bakingapp.data.model.Step;
 import com.deeper.bakingapp.databinding.FragmentDetailsStepperBinding;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
@@ -25,19 +25,18 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 import com.squareup.picasso.Picasso;
-import com.stepstone.stepper.Step;
 import com.stepstone.stepper.VerificationError;
 
 /**
  * Created by Gianni on 03/04/18.
  */
 
-public class FragmentStepperStep extends Fragment implements Step {
+public class FragmentStepperStep extends Fragment implements com.stepstone.stepper.Step {
 
     private static final String CURRENT_VIDEO_POSITION = "video_position";
 
     FragmentDetailsStepperBinding mBinding;
-    BakingStep step;
+    Step step;
 
     private SimpleExoPlayer mExoPlayer;
     private boolean playWhenReady;
@@ -122,7 +121,7 @@ public class FragmentStepperStep extends Fragment implements Step {
         }
     }
 
-    public void updateStep(BakingStep step) {
+    public void updateStep(Step step) {
         this.step = step;
 
         if (mExoPlayer != null)
