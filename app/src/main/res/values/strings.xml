@@ -21,6 +21,9 @@
     <string name="step_number">Step number</string>
     <string name="step_thumbnail">Step\'s Thumbnail</string>
 
+    <!-- Widget -->
+    <string name="empty_recipe">No favourite recipe!</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

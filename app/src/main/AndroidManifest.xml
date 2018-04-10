@@ -26,5 +26,6 @@
             android:authorities="com.deeper.bakingapp.provider"
             android:exported="true"/>
 
+        <service android:name=".widget.GridWidgetService" />
     </application>
 </manifest>
