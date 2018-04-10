@@ -20,6 +20,7 @@ import static com.deeper.bakingapp.data.db.contentprovider.StepContract.StepEntr
 import static com.deeper.bakingapp.data.db.contentprovider.StepContract.StepEntry.COLUMN_THUMBNAIL_URL;
 import static com.deeper.bakingapp.data.db.contentprovider.StepContract.StepEntry.COLUMN_VIDEO_URL;
 import static com.deeper.bakingapp.data.db.contentprovider.StepContract.StepEntry.TABLE_NAME;
+import static com.deeper.bakingapp.data.model.Step.STEP_ID;
 
 /**
  * Created by Gianni on 30/03/18.
@@ -27,7 +28,7 @@ import static com.deeper.bakingapp.data.db.contentprovider.StepContract.StepEntr
 
 @Entity(tableName = TABLE_NAME,
         foreignKeys = @ForeignKey(entity = Recipe.class,
-                parentColumns = "id",
+                parentColumns = STEP_ID,
                 childColumns = COLUMN_RECIPE_ID,
                 onDelete = CASCADE))
 public class Step implements Parcelable {

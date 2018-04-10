@@ -227,7 +227,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     }
 
     @Override
-    public void onClickRecipeItem(Recipe recipe) {
+    public void onClickRecipeItem(Recipe recipe, View clickedImage) {
         mRecipe = recipe;
 
         if (mIsTablet && mLandscape) {

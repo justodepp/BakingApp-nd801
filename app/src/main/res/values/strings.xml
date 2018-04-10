@@ -7,6 +7,10 @@
     <string name="ingredients_label">Ingredients</string>
     <string name="recipe_not_selected">Select almost one recipe.</string>
     <string name="step_not_selected">Select almost one step.</string>
+
+    <string name="label_fav_added">Recipe added to favourites</string>
+    <string name="label_fav_deleted">Recipe removed from favourites</string>
+
     <!-- Step Label -->
     <string name="steps_label">Steps</string>
     <string name="step_video_not_available">No video available.</string>

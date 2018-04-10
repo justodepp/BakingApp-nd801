@@ -11,7 +11,6 @@ import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import static android.arch.persistence.room.ForeignKey.CASCADE;
 import static com.deeper.bakingapp.data.db.contentprovider.IngredientContract.IngredientEntry.COLUMN_ID;
 import static com.deeper.bakingapp.data.db.contentprovider.IngredientContract.IngredientEntry.COLUMN_INGREDIENT;
 import static com.deeper.bakingapp.data.db.contentprovider.IngredientContract.IngredientEntry.COLUMN_MEASURE;
@@ -19,6 +18,7 @@ import static com.deeper.bakingapp.data.db.contentprovider.IngredientContract.In
 import static com.deeper.bakingapp.data.db.contentprovider.IngredientContract.IngredientEntry.COLUMN_RECIPE_ID;
 import static com.deeper.bakingapp.data.db.contentprovider.IngredientContract.IngredientEntry.TABLE_NAME;
 import static com.deeper.bakingapp.data.model.Ingredient.ID;
+import static com.deeper.bakingapp.data.model.Ingredient.RECIPE_ID;
 
 /**
  * Created by Gianni on 30/03/18.
@@ -27,8 +27,8 @@ import static com.deeper.bakingapp.data.model.Ingredient.ID;
 @Entity(tableName = TABLE_NAME,
         foreignKeys = @ForeignKey(entity = Recipe.class,
                 parentColumns = ID,
-                childColumns = COLUMN_RECIPE_ID,
-                onDelete = CASCADE))
+                childColumns = RECIPE_ID,
+                onDelete = ForeignKey.CASCADE))
 public class Ingredient implements Parcelable {
 
     public static final String ID = "id";

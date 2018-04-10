@@ -3,12 +3,15 @@ package com.deeper.bakingapp.ui;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.databinding.DataBindingUtil;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.deeper.bakingapp.R;
+import com.deeper.bakingapp.data.db.BakingRoomDatabase;
 import com.deeper.bakingapp.data.model.Recipe;
 import com.deeper.bakingapp.data.model.Step;
 import com.deeper.bakingapp.databinding.ActivityRecipeStepperBinding;
@@ -17,7 +20,7 @@ import com.deeper.bakingapp.databinding.ActivityRecipeStepperBinding;
  * Created by Gianni on 03/04/18.
  */
 
-public class RecipeDetailsActivity extends AppCompatActivity implements FragmentRecipeDetailsList.OnStepClicked {
+public class RecipeDetailsActivity extends AppCompatActivity implements FragmentRecipeDetailsList.OnStepClicked, FragmentRecipeDetailsList.OnFavClicked {
 
     ActivityRecipeStepperBinding mBinding;
     FragmentRecipeDetailsList fragmentRecipeDetailsList;
@@ -31,6 +34,8 @@ public class RecipeDetailsActivity extends AppCompatActivity implements Fragment
     private boolean mLandscape;
     private boolean mIsTablet;
 
+    private BakingRoomDatabase bakingRoomDatabase;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +45,8 @@ public class RecipeDetailsActivity extends AppCompatActivity implements Fragment
         mIsTablet = getResources().getBoolean(R.bool.isTablet);
         mLandscape = getResources().getConfiguration().orientation ==
                 Configuration.ORIENTATION_LANDSCAPE;
+
+        bakingRoomDatabase = BakingRoomDatabase.getDatabase(getApplicationContext());
 
         parseData(savedInstanceState);
         initUI();
@@ -149,6 +156,83 @@ public class RecipeDetailsActivity extends AppCompatActivity implements Fragment
             bundle.putInt(StepperActivity.CURRENT_STEP_POSITION_KEY, position);
             intent.putExtras(bundle);
             startActivity(intent);
+        }
+    }
+
+    @Override
+    public void onClickedFav(final Recipe recipe) {
+        /*new Thread(new Runnable() {
+            @Override
+            public void run() {
+                final boolean added;
+                if (recipe.getFavourite()) {
+                    added = false;
+                    bakingRoomDatabase.daoRecipe().deleteRecipe(recipe.getId());
+                }
+                else {
+                    added = true;
+
+                    bakingRoomDatabase.daoRecipe().addRecipe(recipe);
+                    bakingRoomDatabase.daoIngredient().addIngredients(recipe.getIngredients());
+                    bakingRoomDatabase.daoStep().addSteps(recipe.getSteps());
+                }
+                recipe.setFavourite(!recipe.getFavourite());
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        fragmentRecipeDetailsList.updateFab(added);
+                    }
+                });
+
+                String message;
+                if (added)
+                    message = getString(R.string.label_fav_added);
+                else
+                    message = getString(R.string.label_fav_deleted);
+
+                Snackbar.make(fragmentRecipeDetailsList.getView().getRootView(),
+                        message, Snackbar.LENGTH_LONG).show();
+            }
+        }).start();*/
+        new RoomAsyncTask().execute(recipe);
+    }
+
+    private class RoomAsyncTask extends AsyncTask<Recipe, Void, Void> {
+
+        @Override
+        protected Void doInBackground(final Recipe... params) {
+            final boolean added;
+            if (params[0].getFavourite()) {
+                added = false;
+                bakingRoomDatabase.daoRecipe().deleteRecipe(params[0].getId());
+            }
+            else {
+                added = true;
+
+                bakingRoomDatabase.daoRecipe().addRecipe(params[0]);
+                bakingRoomDatabase.daoIngredient().addIngredients(params[0].getIngredients());
+                bakingRoomDatabase.daoStep().addSteps(params[0].getSteps());
+            }
+            params[0].setFavourite(!params[0].getFavourite());
+
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    fragmentRecipeDetailsList.updateFab(added);
+                }
+            });
+
+            String message;
+            if (added)
+                message = getString(R.string.label_fav_added);
+            else
+                message = getString(R.string.label_fav_deleted);
+
+            Snackbar.make(fragmentRecipeDetailsList.getView().getRootView(),
+                    message, Snackbar.LENGTH_LONG).show();
+
+            return null;
         }
     }
 }

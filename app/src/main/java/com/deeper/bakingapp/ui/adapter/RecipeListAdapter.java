@@ -2,6 +2,7 @@ package com.deeper.bakingapp.ui.adapter;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
+import android.support.annotation.NonNull;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
@@ -29,7 +30,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
     private final RecipeClickListener mRecipeClickListener;
 
     public interface RecipeClickListener {
-        void onClickRecipeItem(Recipe recipe);
+        void onClickRecipeItem(Recipe recipe, View view);
     }
 
     public RecipeListAdapter(Context context, ArrayList<Recipe> recipe, RecipeClickListener recipeClickListener){
@@ -48,7 +49,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
     }
 
     @Override
-    public void onBindViewHolder(RecipeHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecipeHolder holder, int position) {
         holder.bind(position);
     }
 
@@ -140,7 +141,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
         @Override
         public void onClick(View view) {
             int clickPosition = getAdapterPosition();
-            mRecipeClickListener.onClickRecipeItem(recipe.get(clickPosition));
+            mRecipeClickListener.onClickRecipeItem(recipe.get(clickPosition), view);
         }
     }
 }

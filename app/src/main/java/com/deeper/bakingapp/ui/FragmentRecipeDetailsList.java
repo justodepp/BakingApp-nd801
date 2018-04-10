@@ -32,8 +32,12 @@ public class FragmentRecipeDetailsList extends Fragment implements RecipeDetails
 
     private Recipe mRecipe;
 
-    private OnStepClicked mStepClicked;
+    private OnFavClicked mFavClicked;
+    public interface OnFavClicked {
+        void onClickedFav(Recipe recipe);
+    }
 
+    private OnStepClicked mStepClicked;
     public interface OnStepClicked {
         void onClickedStep(int position, Step step);
     }
@@ -80,6 +84,29 @@ public class FragmentRecipeDetailsList extends Fragment implements RecipeDetails
 
         RecipeDetailsListAdapter listAdapter = new RecipeDetailsListAdapter(getActivity(), (ArrayList<Step>) mRecipe.getSteps(), this);
         mBinding.rvMain.setAdapter(listAdapter);
+
+        initFAB();
+    }
+
+    private void initFAB() {
+        updateFab(mRecipe.getFavourite());
+
+        mBinding.favoriteFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mFavClicked != null)
+                    mFavClicked.onClickedFav(mRecipe);
+            }
+        });
+    }
+
+    public void updateFab(boolean favourite) {
+        if (favourite)
+            mBinding.favoriteFab.setImageDrawable(getActivity().getResources()
+                    .getDrawable(R.drawable.ic_favorite_on));
+        else
+            mBinding.favoriteFab.setImageDrawable(getActivity().getResources()
+                    .getDrawable(R.drawable.ic_favorite_off));
     }
 
     private void initImage() {
@@ -113,15 +140,15 @@ public class FragmentRecipeDetailsList extends Fragment implements RecipeDetails
             mStepClicked = (OnStepClicked) context;
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString()
-                    + " must implement OnFavouriteClickListener");
+                    + " must implement mStepClicked");
         }
 
-        /*try {
-            mStepClickCallback = (OnStepClickListener) context;
+        try {
+            mFavClicked = (OnFavClicked) context;
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString()
-                    + " must implement OnStepClickListener");
-        }*/
+                    + " must implement mFavClicked");
+        }
     }
 
     @Override
