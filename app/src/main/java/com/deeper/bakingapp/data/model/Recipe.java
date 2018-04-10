@@ -47,18 +47,22 @@ public class Recipe implements Parcelable {
 
     @SerializedName(INGREDIENTS)
     @Expose
+    @Ignore
     private List<Ingredient> ingredients = null;
 
     @SerializedName(STEPS)
     @Expose
+    @Ignore
     private List<Step> steps = null;
 
     @SerializedName(SERVINGS)
     @Expose
+    @ColumnInfo(name = COLUMN_SERVINGS)
     private Integer servings;
 
     @SerializedName(IMAGE)
     @Expose
+    @ColumnInfo(name = COLUMN_IMAGE)
     private String image;
 
     @SerializedName(FAVOURITE)

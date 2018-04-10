@@ -45,6 +45,7 @@ public class Step implements Parcelable {
 
     @SerializedName(STEP_ID)
     @Expose
+    @ColumnInfo(name = COLUMN_STEP_ID)
     private Integer stepId;
 
     @SerializedName(RECIPE_ID)
@@ -53,18 +54,22 @@ public class Step implements Parcelable {
 
     @SerializedName(SHORT_DESCRIPTION)
     @Expose
+    @ColumnInfo(name = COLUMN_SHORT_DESCRIPTION)
     private String shortDescription;
 
     @SerializedName(DESCRIPTION)
     @Expose
+    @ColumnInfo(name = COLUMN_DESCRIPTION)
     private String description;
 
     @SerializedName(VIDEO_URL)
     @Expose
+    @ColumnInfo(name = COLUMN_VIDEO_URL)
     private String videoURL;
 
     @SerializedName(THUMBNAIL_URL)
     @Expose
+    @ColumnInfo(name = COLUMN_THUMBNAIL_URL)
     private String thumbnailURL;
 
     public Integer getId() {
@@ -75,11 +80,11 @@ public class Step implements Parcelable {
         this.id = id;
     }
 
-    public int getStepId() {
+    public Integer getStepId() {
         return stepId;
     }
 
-    public void setStepId(int stepId) {
+    public void setStepId(Integer stepId) {
         this.stepId = stepId;
     }
 

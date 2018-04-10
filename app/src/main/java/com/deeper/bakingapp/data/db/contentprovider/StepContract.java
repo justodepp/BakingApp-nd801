@@ -11,7 +11,7 @@ public class StepContract {
         public static final String TABLE_NAME = "steps";
 
         public static final String COLUMN_ID = "_id";
-        public static final String COLUMN_STEP_ID = "step_num";
+        public static final String COLUMN_STEP_ID = "step_id";
         public static final String COLUMN_RECIPE_ID = "recipe_id";
         public static final String COLUMN_SHORT_DESCRIPTION = "short_description";
         public static final String COLUMN_DESCRIPTION = "description";
