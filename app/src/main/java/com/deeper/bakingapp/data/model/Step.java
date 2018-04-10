@@ -126,25 +126,33 @@ public class Step implements Parcelable {
     public Step() {
     }
 
-    public static Step getContentValues(ContentValues origin) {
-        if (origin == null) return null;
+    /**
+     * from com.example.android.contentprovidersample
+     *
+     * Create a new {@link Step} from the specified {@link ContentValues}.
+     *
+     * @param values A {@link ContentValues}.
+     * @return A newly created {@link Step} instance.
+     */
+    public static Step fromContentValues(ContentValues values) {
+        if (values == null) return null;
 
         final Step step = new Step();
 
-        if (origin.containsKey(COLUMN_ID))
-            step.setId(origin.getAsInteger(COLUMN_ID));
-        if (origin.containsKey(COLUMN_STEP_ID))
-            step.setStepId(origin.getAsInteger(COLUMN_STEP_ID));
-        if (origin.containsKey(COLUMN_RECIPE_ID))
-            step.setRecipeId(origin.getAsInteger(COLUMN_RECIPE_ID));
-        if (origin.containsKey(COLUMN_DESCRIPTION))
-            step.setDescription(origin.getAsString(COLUMN_DESCRIPTION));
-        if (origin.containsKey(COLUMN_SHORT_DESCRIPTION))
-            step.setShortDescription(origin.getAsString(COLUMN_SHORT_DESCRIPTION));
-        if (origin.containsKey(COLUMN_VIDEO_URL))
-            step.setVideoURL(origin.getAsString(COLUMN_VIDEO_URL));
-        if (origin.containsKey(COLUMN_THUMBNAIL_URL))
-            step.setThumbnailURL(origin.getAsString(COLUMN_THUMBNAIL_URL));
+        if (values.containsKey(COLUMN_ID))
+            step.setId(values.getAsInteger(COLUMN_ID));
+        if (values.containsKey(COLUMN_STEP_ID))
+            step.setStepId(values.getAsInteger(COLUMN_STEP_ID));
+        if (values.containsKey(COLUMN_RECIPE_ID))
+            step.setRecipeId(values.getAsInteger(COLUMN_RECIPE_ID));
+        if (values.containsKey(COLUMN_DESCRIPTION))
+            step.setDescription(values.getAsString(COLUMN_DESCRIPTION));
+        if (values.containsKey(COLUMN_SHORT_DESCRIPTION))
+            step.setShortDescription(values.getAsString(COLUMN_SHORT_DESCRIPTION));
+        if (values.containsKey(COLUMN_VIDEO_URL))
+            step.setVideoURL(values.getAsString(COLUMN_VIDEO_URL));
+        if (values.containsKey(COLUMN_THUMBNAIL_URL))
+            step.setThumbnailURL(values.getAsString(COLUMN_THUMBNAIL_URL));
 
         return step;
     }

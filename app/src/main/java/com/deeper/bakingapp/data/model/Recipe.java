@@ -142,19 +142,27 @@ public class Recipe implements Parcelable {
     public Recipe() {
     }
 
-    public static Recipe getContentValues(ContentValues origin) {
-        if (origin == null) return null;
+    /**
+     * from com.example.android.contentprovidersample
+     *
+     * Create a new {@link Recipe} from the specified {@link ContentValues}.
+     *
+     * @param values A {@link ContentValues}.
+     * @return A newly created {@link Recipe} instance.
+     */
+    public static Recipe fromContentValues(ContentValues values) {
+        if (values == null) return null;
 
         final Recipe recipe = new Recipe();
 
-        if (origin.containsKey(COLUMN_ID))
-            recipe.setId(origin.getAsInteger(COLUMN_ID));
-        if (origin.containsKey(COLUMN_NAME))
-            recipe.setName(origin.getAsString(COLUMN_NAME));
-        if (origin.containsKey(COLUMN_SERVINGS))
-            recipe.setServings(origin.getAsInteger(COLUMN_SERVINGS));
-        if (origin.containsKey(COLUMN_IMAGE))
-            recipe.setImage(origin.getAsString(COLUMN_IMAGE));
+        if (values.containsKey(COLUMN_ID))
+            recipe.setId(values.getAsInteger(COLUMN_ID));
+        if (values.containsKey(COLUMN_NAME))
+            recipe.setName(values.getAsString(COLUMN_NAME));
+        if (values.containsKey(COLUMN_SERVINGS))
+            recipe.setServings(values.getAsInteger(COLUMN_SERVINGS));
+        if (values.containsKey(COLUMN_IMAGE))
+            recipe.setImage(values.getAsString(COLUMN_IMAGE));
 
         return recipe;
     }

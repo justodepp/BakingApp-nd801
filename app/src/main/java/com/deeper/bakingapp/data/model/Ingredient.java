@@ -103,21 +103,29 @@ public class Ingredient implements Parcelable {
     public Ingredient() {
     }
 
-    public static Ingredient getContentValues(ContentValues origin) {
-        if (origin == null) return null;
+    /**
+     * from com.example.android.contentprovidersample
+     *
+     * Create a new {@link Ingredient} from the specified {@link ContentValues}.
+     *
+     * @param values A {@link ContentValues}.
+     * @return A newly created {@link Ingredient} instance.
+     */
+    public static Ingredient fromContentValues(ContentValues values) {
+        if (values == null) return null;
 
         final Ingredient ingredient = new Ingredient();
 
-        if (origin.containsKey(COLUMN_ID))
-            ingredient.setId(origin.getAsInteger(COLUMN_ID));
-        if (origin.containsKey(COLUMN_RECIPE_ID))
-            ingredient.setRecipeId(origin.getAsInteger(COLUMN_RECIPE_ID));
-        if (origin.containsKey(COLUMN_QUANTITY))
-            ingredient.setQuantity(origin.getAsDouble(COLUMN_QUANTITY));
-        if (origin.containsKey(COLUMN_MEASURE))
-            ingredient.setMeasure(origin.getAsString(COLUMN_MEASURE));
-        if (origin.containsKey(COLUMN_INGREDIENT))
-            ingredient.setIngredient(origin.getAsString(COLUMN_INGREDIENT));
+        if (values.containsKey(COLUMN_ID))
+            ingredient.setId(values.getAsInteger(COLUMN_ID));
+        if (values.containsKey(COLUMN_RECIPE_ID))
+            ingredient.setRecipeId(values.getAsInteger(COLUMN_RECIPE_ID));
+        if (values.containsKey(COLUMN_QUANTITY))
+            ingredient.setQuantity(values.getAsDouble(COLUMN_QUANTITY));
+        if (values.containsKey(COLUMN_MEASURE))
+            ingredient.setMeasure(values.getAsString(COLUMN_MEASURE));
+        if (values.containsKey(COLUMN_INGREDIENT))
+            ingredient.setIngredient(values.getAsString(COLUMN_INGREDIENT));
 
         return ingredient;
     }

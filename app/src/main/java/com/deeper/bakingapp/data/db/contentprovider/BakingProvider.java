@@ -17,8 +17,17 @@ import com.deeper.bakingapp.data.model.Step;
 
 import java.util.ArrayList;
 
+/**
+ * some code are provided from com.example.android.contentprovidersample
+ *
+ * A {@link ContentProvider} based on a Room database.
+ *
+ * <p>Note that you don't need to implement a ContentProvider unless you want to expose the data
+ * outside your process or your application already uses a ContentProvider.</p>
+ */
 public class BakingProvider extends ContentProvider {
 
+    /** The authority of this content provider. */
     public static final String CONTENT_AUTHORITY = "com.deeper.bakingapp.provider";
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
 
@@ -110,17 +119,17 @@ public class BakingProvider extends ContentProvider {
         switch (sUriMatcher.match(uri)) {
             case CODE_RECIPE_WITH_ID:
                 id = bakingDatabase.daoRecipe()
-                        .addRecipe(Recipe.getContentValues(contentValues));
+                        .addRecipe(Recipe.fromContentValues(contentValues));
                 context.getContentResolver().notifyChange(uri, null);
                 return ContentUris.withAppendedId(uri, id);
             case CODE_INGREDIENT_WITH_ID:
                 id = bakingDatabase.daoIngredient()
-                        .addIngredient(Ingredient.getContentValues(contentValues));
+                        .addIngredient(Ingredient.fromContentValues(contentValues));
                 context.getContentResolver().notifyChange(uri, null);
                 return ContentUris.withAppendedId(uri, id);
             case CODE_STEP_WITH_ID:
                 id = bakingDatabase.daoStep()
-                        .addStep(Step.getContentValues(contentValues));
+                        .addStep(Step.fromContentValues(contentValues));
                 context.getContentResolver().notifyChange(uri, null);
                 return ContentUris.withAppendedId(uri, id);
             default:
@@ -139,14 +148,14 @@ public class BakingProvider extends ContentProvider {
             case CODE_INGREDIENTS:
                 final ArrayList<Ingredient> ingredients = new ArrayList<>();
                 for (ContentValues ingredient : valuesArray)
-                    ingredients.add(Ingredient.getContentValues(ingredient));
+                    ingredients.add(Ingredient.fromContentValues(ingredient));
 
                 bakingDatabase.daoIngredient().addIngredients(ingredients);
                 return valuesArray.length;
             case CODE_STEPS:
                 final ArrayList<Step> steps = new ArrayList<>();
                 for (ContentValues step : valuesArray)
-                    steps.add(Step.getContentValues(step));
+                    steps.add(Step.fromContentValues(step));
 
                 bakingDatabase.daoStep().addSteps(steps);
                 return valuesArray.length;
