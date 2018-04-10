@@ -14,6 +14,8 @@ import android.widget.TextView;
 
 import com.deeper.bakingapp.BuildConfig;
 import com.deeper.bakingapp.R;
+import com.deeper.bakingapp.data.db.BakingRoomDatabase;
+import com.deeper.bakingapp.data.model.Ingredient;
 import com.deeper.bakingapp.data.model.Recipe;
 import com.deeper.bakingapp.data.model.Step;
 import com.deeper.bakingapp.data.network.api.ApiEndPointHandler;
@@ -24,6 +26,8 @@ import com.deeper.bakingapp.utils.Utility;
 import com.facebook.stetho.Stetho;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -178,14 +182,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             @Override
             public void onResponse(Call<Recipe[]> call, Response<Recipe[]> response) {
                 if (response.isSuccessful()) {
-                    for (int i = 0; i < response.body().length; i++) {
-                        recipeList.add(response.body()[i]);
-                    }
-
-                    recipeAdapter = new RecipeListAdapter(MainActivity.this, recipeList, MainActivity.this);
-                    mRecyclerView.setAdapter(recipeAdapter);
-
-                    showData();
+                    recipeList.addAll(Arrays.asList(Objects.requireNonNull(response.body())));
+                    settingId(recipeList);
                 }
             }
 
@@ -197,6 +195,30 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         Snackbar.LENGTH_LONG).show();
             }
         });
+    }
+
+    private void settingId(ArrayList<Recipe> recipeList) {
+        for (final Recipe recipe : recipeList) {
+            for (Ingredient ingredient : recipe.getIngredients())
+                ingredient.setRecipeId(recipe.getId());
+
+            for (Step step : recipe.getSteps())
+                step.setRecipeId(recipe.getId());
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    boolean favourite = BakingRoomDatabase.getDatabase(getApplicationContext())
+                            .daoRecipe().getRecipe(recipe.getId()) != null;
+                    recipe.setFavourite(favourite);
+                }
+            }).start();
+        }
+
+        recipeAdapter = new RecipeListAdapter(MainActivity.this, recipeList, MainActivity.this);
+        mRecyclerView.setAdapter(recipeAdapter);
+
+        showData();
     }
 
     @Override

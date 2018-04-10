@@ -210,9 +210,14 @@ public class RecipeDetailsActivity extends AppCompatActivity implements Fragment
             else {
                 added = true;
 
-                bakingRoomDatabase.daoRecipe().addRecipe(params[0]);
-                bakingRoomDatabase.daoIngredient().addIngredients(params[0].getIngredients());
-                bakingRoomDatabase.daoStep().addSteps(params[0].getSteps());
+                bakingRoomDatabase.runInTransaction(new Runnable() {
+                    @Override
+                    public void run() {
+                        bakingRoomDatabase.daoRecipe().addRecipe(params[0]);
+                        bakingRoomDatabase.daoIngredient().addIngredients(params[0].getIngredients());
+                        bakingRoomDatabase.daoStep().addSteps(params[0].getSteps());
+                    }
+                });
             }
             params[0].setFavourite(!params[0].getFavourite());
 
