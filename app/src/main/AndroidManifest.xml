@@ -21,6 +21,16 @@
         <activity android:name=".ui.RecipeDetailsActivity" />
         <activity android:name=".ui.StepperActivity" />
 
+        <receiver android:name=".widget.BakingWidgetProvider">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/baking_widget_info" />
+        </receiver>
+
         <provider
             android:name=".data.db.contentprovider.BakingProvider"
             android:authorities="com.deeper.bakingapp.provider"

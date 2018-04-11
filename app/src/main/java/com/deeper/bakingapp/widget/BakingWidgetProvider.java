@@ -21,8 +21,9 @@ public class BakingWidgetProvider extends AppWidgetProvider {
 
     void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
 
+        // Construct the RemoteViews object
         RemoteViews remoteViews = getRecipeGridRemoteView(context);
-
+        // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
     }
 
@@ -41,6 +42,7 @@ public class BakingWidgetProvider extends AppWidgetProvider {
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
+        // There may be multiple widgets active, so update all of them
         for (int appWidgetId : appWidgetIds) {
             updateAppWidget(context, appWidgetManager, appWidgetId);
         }
@@ -77,7 +79,4 @@ public class BakingWidgetProvider extends AppWidgetProvider {
             }
         }
     }
-
-
 }
-
