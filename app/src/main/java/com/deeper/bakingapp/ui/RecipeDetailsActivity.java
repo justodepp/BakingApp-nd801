@@ -234,7 +234,7 @@ public class RecipeDetailsActivity extends AppCompatActivity implements Fragment
             else
                 message = getString(R.string.label_fav_deleted);
 
-            Snackbar.make(fragmentRecipeDetailsList.getView().getRootView(),
+            Snackbar.make(mBinding.coordinatorView,
                     message, Snackbar.LENGTH_LONG).show();
 
             return null;
