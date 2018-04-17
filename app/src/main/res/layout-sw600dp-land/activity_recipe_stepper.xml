@@ -4,6 +4,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+        <variable name="recipe"
+            type="com.deeper.bakingapp.data.model.Recipe"/>
+    </data>
+
     <android.support.design.widget.CoordinatorLayout
         android:id="@+id/coordinator_view"
         android:layout_width="match_parent"

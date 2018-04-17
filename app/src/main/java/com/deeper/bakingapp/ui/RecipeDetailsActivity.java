@@ -161,7 +161,7 @@ public class RecipeDetailsActivity extends AppCompatActivity implements Fragment
 
     @Override
     public void onClickedFav(final Recipe recipe) {
-        new Thread(new Runnable() {
+        /*new Thread(new Runnable() {
             @Override
             public void run() {
                 final boolean added;
@@ -199,8 +199,8 @@ public class RecipeDetailsActivity extends AppCompatActivity implements Fragment
                 Snackbar.make(fragmentRecipeDetailsList.getView().getRootView(),
                         message, Snackbar.LENGTH_LONG).show();
             }
-        }).start();
-        //new RoomAsyncTask().execute(recipe);
+        }).start();*/
+        new RoomAsyncTask().execute(recipe);
     }
 
     private class RoomAsyncTask extends AsyncTask<Recipe, Void, Void> {

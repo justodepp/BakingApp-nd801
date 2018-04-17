@@ -30,7 +30,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
     private final RecipeClickListener mRecipeClickListener;
 
     public interface RecipeClickListener {
-        void onClickRecipeItem(Recipe recipe, View view);
+        void onClickRecipeItem(Recipe recipe);
     }
 
     public RecipeListAdapter(Context context, ArrayList<Recipe> recipe, RecipeClickListener recipeClickListener){
@@ -50,7 +50,8 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
 
     @Override
     public void onBindViewHolder(@NonNull RecipeHolder holder, int position) {
-        holder.bind(position);
+        Recipe one_recipe = recipe.get(position);
+        holder.bind(one_recipe);
     }
 
     @Override
@@ -106,24 +107,25 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
 
         RecipeHolder(BakingRecipeItemListBinding binding) {
             super(binding.getRoot());
-            this.mBinding = binding;
 
-            mBinding.getRoot().setOnClickListener(this);
+            binding.getRoot().setOnClickListener(this);
+
+            this.mBinding = binding;
         }
 
-        public void bind(int position){
+        public void bind(Recipe one_recipe){
             int resource = R.drawable.img_cupcake;
-            if(recipe.get(position).getName().toLowerCase().contains("nutella"))
+            if(one_recipe.getName().toLowerCase().contains("nutella"))
                 resource = R.drawable.img_nutella_pie;
-            else if(recipe.get(position).getName().toLowerCase().contains("yellow"))
+            else if(one_recipe.getName().toLowerCase().contains("yellow"))
                 resource = R.drawable.img_yellow_cake;
-            else if(recipe.get(position).getName().toLowerCase().contains("brownies"))
+            else if(one_recipe.getName().toLowerCase().contains("brownies"))
                 resource = R.drawable.img_brownies;
-            else if(recipe.get(position).getName().toLowerCase().contains("cheese"))
+            else if(one_recipe.getName().toLowerCase().contains("cheese"))
                 resource = R.drawable.img_cheesecake;
-            if (!TextUtils.isEmpty(recipe.get(position).getImage())) {
+            if (!TextUtils.isEmpty(one_recipe.getImage())) {
                 Picasso.get()
-                        .load(recipe.get(position).getImage())
+                        .load(one_recipe.getImage())
                         .error(resource)
                         .placeholder(resource)
                         .into(mBinding.recipeImageview);
@@ -133,15 +135,15 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
                         .into(mBinding.recipeImageview);
             }
 
-            mBinding.recipeNameTextview.setText(recipe.get(position).getName());
+            mBinding.recipeNameTextview.setText(one_recipe.getName());
 
-            ViewCompat.setTransitionName(mBinding.recipeImageview, String.valueOf(recipe.get(position).getId()));
+            ViewCompat.setTransitionName(mBinding.recipeImageview, String.valueOf(one_recipe.getId()));
         }
 
         @Override
         public void onClick(View view) {
             int clickPosition = getAdapterPosition();
-            mRecipeClickListener.onClickRecipeItem(recipe.get(clickPosition), view);
+            mRecipeClickListener.onClickRecipeItem(recipe.get(clickPosition));
         }
     }
 }

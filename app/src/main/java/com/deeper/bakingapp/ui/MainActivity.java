@@ -58,6 +58,12 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     private boolean mLandscape;
     private boolean mIsTablet;
 
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -242,7 +248,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     }
 
     @Override
-    public void onClickRecipeItem(Recipe recipe, View clickedImage) {
+    public void onClickRecipeItem(Recipe recipe) {
         mRecipe = recipe;
 
         if (mIsTablet && mLandscape) {
