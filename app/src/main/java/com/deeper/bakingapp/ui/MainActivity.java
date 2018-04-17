@@ -97,18 +97,11 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 if (recipeList == null)
                     onRefresh();
                 else if (recipeList.size() > 0) {
-                    /*if (savedInstanceState.containsKey(KEY_FIRST_VISIBLE_ITEM_POS))
-                        firstVisibleItemPosition = savedInstanceState.getInt(KEY_FIRST_VISIBLE_ITEM_POS);
-                    else
-                        firstVisibleItemPosition = 0;
-                    mRecyclerView.smoothScrollToPosition(firstVisibleItemPosition);*/
-
                     RecipeListAdapter adapter = (RecipeListAdapter) mRecyclerView.getAdapter();
                     if (adapter == null) {
                         adapter = new RecipeListAdapter(MainActivity.this, recipeList, MainActivity.this);
                         mRecyclerView.setAdapter(adapter);
                     }
-
                     adapter.setList(recipeList);
                     adapter.notifyDataSetChanged();
                 }

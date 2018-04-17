@@ -12,30 +12,43 @@ import android.os.Bundle;
 import android.widget.RemoteViews;
 
 import com.deeper.bakingapp.R;
+import com.deeper.bakingapp.data.model.Recipe;
 import com.deeper.bakingapp.ui.MainActivity;
+import com.deeper.bakingapp.ui.RecipeDetailsActivity;
+import com.deeper.bakingapp.ui.StepperActivity;
 
 /**
  * Implementation of App Widget functionality.
  */
 public class BakingWidgetProvider extends AppWidgetProvider {
 
-    void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
+    static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
 
+        Recipe recipe = BakingWidgetConfigureActivity.loadRecipePref(context, appWidgetId);
         // Construct the RemoteViews object
-        RemoteViews remoteViews = getRecipeGridRemoteView(context);
+        RemoteViews remoteViews = getRecipeGridRemoteView(context, recipe, appWidgetId);
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
     }
 
-    public RemoteViews getRecipeGridRemoteView(Context context) {
+    public static RemoteViews getRecipeGridRemoteView(Context context, Recipe recipe, int appWidgetId) {
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.baking_widget_provider);
 
-        Intent gridIntent = new Intent(context, GridWidgetService.class);
-        views.setRemoteAdapter(R.id.widget_grid_view, gridIntent);
+        Intent intent = new Intent(context, RecipeDetailsActivity.class);
+        intent.putExtra(StepperActivity.RECIPE_KEY, recipe);
 
         Intent appIntent = new Intent(context, MainActivity.class);
-        PendingIntent intent = PendingIntent.getActivity(context, 0, appIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        views.setPendingIntentTemplate(R.id.widget_grid_view, intent);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, appIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        //views.setPendingIntentTemplate(R.id.widget_grid_view, pendingIntent);
+        views.setOnClickPendingIntent(R.id.widget_grid_view, pendingIntent);
+
+        if(recipe != null) {
+            views.setTextViewText(R.id.food_name, recipe.getName());
+
+            Intent gridIntent = new Intent(context, GridWidgetService.class);
+            gridIntent.putExtra(GridWidgetService.KEY_WIDGET, appWidgetId);
+            views.setRemoteAdapter(R.id.widget_grid_view, gridIntent);
+        }
 
         return views;
     }
@@ -77,6 +90,14 @@ public class BakingWidgetProvider extends AppWidgetProvider {
                 appWidgetManager.notifyAppWidgetViewDataChanged(appwidgetIds, R.id.widget_grid_view);
                 onUpdate(context, appWidgetManager, appwidgetIds);
             }
+        }
+    }
+
+    @Override
+    public void onDeleted(Context context, int[] appWidgetIds) {
+        // When the user deletes the widget, delete the preference associated with it.
+        for (int appWidgetId : appWidgetIds) {
+            BakingWidgetConfigureActivity.deleteRecipePref(context, appWidgetId);
         }
     }
 }

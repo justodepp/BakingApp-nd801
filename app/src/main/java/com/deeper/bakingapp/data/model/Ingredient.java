@@ -5,9 +5,11 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.PrimaryKey;
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.deeper.bakingapp.data.db.contentprovider.IngredientContract;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -103,6 +105,14 @@ public class Ingredient implements Parcelable {
     public Ingredient() {
     }
 
+    public Ingredient(int id, int recipeId, double quantity, String measure, String ingredient) {
+        setId(id);
+        setRecipeId(recipeId);
+        setQuantity(quantity);
+        setMeasure(measure);
+        setIngredient(ingredient);
+    }
+
     /**
      * from com.example.android.contentprovidersample
      *
@@ -128,6 +138,30 @@ public class Ingredient implements Parcelable {
             ingredient.setIngredient(values.getAsString(COLUMN_INGREDIENT));
 
         return ingredient;
+    }
+
+    /**
+     * from com.example.android.contentprovidersample
+     *
+     * Create a new {@link Ingredient} from the specified {@link Cursor}.
+     *
+     * @param cursor A {@link Cursor}.
+     * @return A newly created {@link Ingredient} instance.
+     */
+    public static Ingredient fromCursor(Cursor cursor) {
+        int idIndex = cursor.getColumnIndex(IngredientContract.IngredientEntry.COLUMN_ID);
+        int recipeIdIndex = cursor.getColumnIndex(IngredientContract.IngredientEntry.COLUMN_RECIPE_ID);
+        int quantityIndex = cursor.getColumnIndex(IngredientContract.IngredientEntry.COLUMN_QUANTITY);
+        int measureIndex = cursor.getColumnIndex(IngredientContract.IngredientEntry.COLUMN_MEASURE);
+        int ingredientIndex = cursor.getColumnIndex(IngredientContract.IngredientEntry.COLUMN_INGREDIENT);
+
+        int ingredientId = cursor.getInt(idIndex);
+        int ingredientRecipeId = cursor.getInt(recipeIdIndex);
+        float ingredientQuantity = cursor.getFloat(quantityIndex);
+        String ingredientMeasure = cursor.getString(measureIndex);
+        String ingredient = cursor.getString(ingredientIndex);
+
+        return new Ingredient(ingredientId, ingredientRecipeId, ingredientQuantity, ingredientMeasure, ingredient);
     }
 
     @Override

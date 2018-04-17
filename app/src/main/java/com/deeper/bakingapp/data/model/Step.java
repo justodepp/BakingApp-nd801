@@ -5,6 +5,7 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.PrimaryKey;
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -132,6 +133,17 @@ public class Step implements Parcelable {
     public Step() {
     }
 
+    public Step(int id, int stepNum, int recipeId,
+                String shortDescription, String description, String videoURL, String thumbnailURL) {
+        setId(id);
+        setStepId(stepNum);
+        setRecipeId(recipeId);
+        setShortDescription(shortDescription);
+        setDescription(description);
+        setVideoURL(videoURL);
+        setThumbnailURL(thumbnailURL);
+    }
+
     /**
      * from com.example.android.contentprovidersample
      *
@@ -161,6 +173,35 @@ public class Step implements Parcelable {
             step.setThumbnailURL(values.getAsString(COLUMN_THUMBNAIL_URL));
 
         return step;
+    }
+
+    /**
+     * from com.example.android.contentprovidersample
+     *
+     * Create a new {@link Step} from the specified {@link Cursor}.
+     *
+     * @param cursor A {@link Cursor}.
+     * @return A newly created {@link Step} instance.
+     */
+    public static Step fromCursor(Cursor cursor) {
+        int idIndex = cursor.getColumnIndex(COLUMN_ID);
+        int stepNumIndex = cursor.getColumnIndex(COLUMN_STEP_ID);
+        int recipeIdIndex = cursor.getColumnIndex(COLUMN_RECIPE_ID);
+        int shortDescriptionIndex = cursor.getColumnIndex(COLUMN_SHORT_DESCRIPTION);
+        int descriptionIndex = cursor.getColumnIndex(COLUMN_DESCRIPTION);
+        int videoUrlIndex = cursor.getColumnIndex(COLUMN_VIDEO_URL);
+        int thumbnailUrlIndex = cursor.getColumnIndex(COLUMN_THUMBNAIL_URL);
+
+        int stepId = cursor.getInt(idIndex);
+        int stepNum = cursor.getInt(stepNumIndex);
+        int stepRecipeId = cursor.getInt(recipeIdIndex);
+        String stepShortDescription = cursor.getString(shortDescriptionIndex);
+        String stepDescription = cursor.getString(descriptionIndex);
+        String stepVideoUrl = cursor.getString(videoUrlIndex);
+        String stepThumbnailUrl = cursor.getString(thumbnailUrlIndex);
+
+        return new Step(stepId, stepNum, stepRecipeId, stepShortDescription, stepDescription,
+                stepVideoUrl, stepThumbnailUrl);
     }
 
     @Override

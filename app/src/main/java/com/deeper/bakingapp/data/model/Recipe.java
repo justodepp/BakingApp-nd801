@@ -9,12 +9,18 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.deeper.bakingapp.data.db.contentprovider.RecipeContract;
+import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.deeper.bakingapp.data.db.contentprovider.RecipeContract.RecipeEntry.COLUMN_ID;
@@ -146,6 +152,25 @@ public class Recipe implements Parcelable {
     public Recipe() {
     }
 
+    public Recipe(int id, String name, int servings, String image) {
+        setId(id);
+        setName(name);
+        setIngredients(new ArrayList<Ingredient>());
+        setSteps(new ArrayList<Step>());
+        setServings(servings);
+        setImage(image);
+    }
+
+    public Recipe(int id, String name, List<Ingredient> ingredients, List<Step> steps,
+                  int servings, String image) {
+        setId(id);
+        setName(name);
+        setIngredients(ingredients);
+        setSteps(steps);
+        setServings(servings);
+        setImage(image);
+    }
+
     /**
      * from com.example.android.contentprovidersample
      *
@@ -169,6 +194,40 @@ public class Recipe implements Parcelable {
             recipe.setImage(values.getAsString(COLUMN_IMAGE));
 
         return recipe;
+    }
+
+    /**
+     * from com.example.android.contentprovidersample
+     *
+     * Create a new {@link Recipe} from the specified {@link Cursor}.
+     *
+     * @param cursor A {@link Cursor}.
+     * @return A newly created {@link Recipe} instance.
+     */
+    public static Recipe fromCursor(Cursor cursor) {
+        int idIndex = cursor.getColumnIndex(RecipeContract.RecipeEntry.COLUMN_ID);
+        int nameIndex = cursor.getColumnIndex(RecipeContract.RecipeEntry.COLUMN_NAME);
+        int servingsIndex = cursor.getColumnIndex(RecipeContract.RecipeEntry.COLUMN_SERVINGS);
+        int imageIndex = cursor.getColumnIndex(RecipeContract.RecipeEntry.COLUMN_IMAGE);
+
+        int recipeId = cursor.getInt(idIndex);
+        String recipeName = cursor.getString(nameIndex);
+        int recipeServings = cursor.getInt(servingsIndex);
+        String recipeImage = cursor.getString(imageIndex);
+
+        return new Recipe(recipeId, recipeName, recipeServings, recipeImage);
+    }
+
+    public static Recipe fromJsonString(String json) {
+        Gson gson = new Gson();
+        Type type = new TypeToken<Recipe>() {}.getType();
+        return gson.fromJson(json, type);
+    }
+
+    public String toJsonString() {
+        Gson gson = new Gson();
+        Type type = new TypeToken<Recipe>() {}.getType();
+        return gson.toJson(this, type);
     }
 
     @Override
