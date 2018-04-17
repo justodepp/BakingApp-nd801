@@ -58,12 +58,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     private boolean mLandscape;
     private boolean mIsTablet;
 
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,6 +84,12 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
         initUI();
         gettingData(savedInstanceState);
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        onRefresh();
     }
 
     private void gettingData(Bundle savedInstanceState) {
