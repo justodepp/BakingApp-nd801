@@ -28,7 +28,7 @@ public class BakingWidgetConfigureActivity extends AppCompatActivity implements
 
     private static final int LOADER_RECIPES = 123;
 
-    private static final String PREFS_NAME = "it.communikein.bakingapp.widget.RecipeIngredientsWidget";
+    private static final String PREFS_NAME = "com.deeper.bakingapp.widget.BakingWidgetProvider";
     private static final String PREF_PREFIX_KEY = "appwidget_";
     int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
 
