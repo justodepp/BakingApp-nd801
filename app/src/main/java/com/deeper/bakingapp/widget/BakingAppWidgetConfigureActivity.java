@@ -16,44 +16,68 @@ import android.widget.ArrayAdapter;
 
 import com.deeper.bakingapp.R;
 import com.deeper.bakingapp.data.model.Recipe;
-import com.deeper.bakingapp.databinding.BakingWidgetConfigureBinding;
+import com.deeper.bakingapp.databinding.BakingAppWidgetConfigureBinding;
 
 import java.util.ArrayList;
 
 /**
- * The configuration screen for the {@link BakingWidgetProvider RecipeIngredientsWidget} AppWidget.
+ * The configuration screen for the {@link BakingAppWidget BakingAppWidget} AppWidget.
  */
-public class BakingWidgetConfigureActivity extends AppCompatActivity implements
-        LoaderManager.LoaderCallbacks<ArrayList<Recipe>> {
+public class BakingAppWidgetConfigureActivity extends AppCompatActivity implements
+        LoaderManager.LoaderCallbacks<ArrayList<Recipe>>{
 
     private static final int LOADER_RECIPES = 123;
 
-    private static final String PREFS_NAME = "com.deeper.bakingapp.widget.BakingWidgetProvider";
+    private static final String PREFS_NAME = "com.deeper.bakingapp.widget.BakingAppWidget";
     private static final String PREF_PREFIX_KEY = "appwidget_";
     int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
 
-    BakingWidgetConfigureBinding mBinding;
+    BakingAppWidgetConfigureBinding mBinding;
+
+    View.OnClickListener mOnClickListener = new View.OnClickListener() {
+        public void onClick(View v) {
+            final Context context = BakingAppWidgetConfigureActivity.this;
+
+            // When the button is clicked, store the string locally
+            Recipe selected = (Recipe) mBinding.recipesSpinner.getSelectedItem();
+            saveTitlePref(context, mAppWidgetId, selected);
+
+            // It is the responsibility of the configuration activity to update the app widget
+            AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+            BakingAppWidget.updateAppWidget(context, appWidgetManager, mAppWidgetId);
+
+            // Make sure we pass back the original appWidgetId
+            Intent resultValue = new Intent();
+            resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
+            setResult(RESULT_OK, resultValue);
+            finish();
+        }
+    };
+
+    public BakingAppWidgetConfigureActivity() {
+        super();
+    }
 
     // Write the prefix to the SharedPreferences object for this widget
-    static void saveRecipePref(Context context, int appWidgetId, Recipe recipe) {
+    static void saveTitlePref(Context context, int appWidgetId, Recipe text) {
         SharedPreferences.Editor prefs = context.getSharedPreferences(PREFS_NAME, 0).edit();
-        prefs.putString(PREF_PREFIX_KEY + appWidgetId, recipe.toJsonString());
+        prefs.putString(PREF_PREFIX_KEY + appWidgetId, text.toJsonString());
         prefs.apply();
     }
 
     // Read the prefix from the SharedPreferences object for this widget.
     // If there is no preference saved, get the default from a resource
-    static Recipe loadRecipePref(Context context, int appWidgetId) {
+    static String loadTitlePref(Context context, int appWidgetId) {
         SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
-        String recipeString = prefs.getString(PREF_PREFIX_KEY + appWidgetId, null);
-        if (recipeString != null) {
-            return Recipe.fromJsonString(recipeString);
+        String titleValue = prefs.getString(PREF_PREFIX_KEY + appWidgetId, null);
+        if (titleValue != null) {
+            return titleValue;
         } else {
-            return null;
+            return context.getString(R.string.appwidget_text);
         }
     }
 
-    static void deleteRecipePref(Context context, int appWidgetId) {
+    static void deleteTitlePref(Context context, int appWidgetId) {
         SharedPreferences.Editor prefs = context.getSharedPreferences(PREFS_NAME, 0).edit();
         prefs.remove(PREF_PREFIX_KEY + appWidgetId);
         prefs.apply();
@@ -66,14 +90,8 @@ public class BakingWidgetConfigureActivity extends AppCompatActivity implements
         // Set the result to CANCELED.  This will cause the widget host to cancel
         // out of the widget placement if the user presses the back button.
         setResult(RESULT_CANCELED);
-
-        mBinding = DataBindingUtil.setContentView(this, R.layout.baking_widget_configure);
-        mBinding.recipesSpinner.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setRecipe();
-            }
-        });
+        mBinding = DataBindingUtil.setContentView(this, R.layout.baking_app_widget_configure);
+        mBinding.addButton.setOnClickListener(mOnClickListener);
 
         getSupportLoaderManager()
                 .restartLoader(LOADER_RECIPES, null, this)
@@ -88,26 +106,9 @@ public class BakingWidgetConfigureActivity extends AppCompatActivity implements
         }
 
         // If this activity was started with an intent without an app widget ID, finish with an error.
-        if (mAppWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID)
+        if (mAppWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID) {
             finish();
-    }
-
-    private void setRecipe() {
-        final Context context = BakingWidgetConfigureActivity.this;
-
-        // When the button is clicked, store the string locally
-        Recipe selected = (Recipe) mBinding.recipesSpinner.getSelectedItem();
-        saveRecipePref(context, mAppWidgetId, selected);
-
-        // It is the responsibility of the configuration activity to update the app widget
-        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-        BakingWidgetProvider.updateAppWidget(context, appWidgetManager, mAppWidgetId);
-
-        // Make sure we pass back the original appWidgetId
-        Intent resultValue = new Intent();
-        resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
-        setResult(RESULT_OK, resultValue);
-        finish();
+        }
     }
 
     @NonNull
