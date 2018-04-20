@@ -67,13 +67,13 @@ public class BakingAppWidgetConfigureActivity extends AppCompatActivity implemen
 
     // Read the prefix from the SharedPreferences object for this widget.
     // If there is no preference saved, get the default from a resource
-    static String loadTitlePref(Context context, int appWidgetId) {
+    static Recipe loadTitlePref(Context context, int appWidgetId) {
         SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
         String titleValue = prefs.getString(PREF_PREFIX_KEY + appWidgetId, null);
         if (titleValue != null) {
-            return titleValue;
+            return Recipe.fromJsonString(titleValue);
         } else {
-            return context.getString(R.string.appwidget_text);
+            return null;
         }
     }
 
@@ -128,7 +128,7 @@ public class BakingAppWidgetConfigureActivity extends AppCompatActivity implemen
         switch (loader.getId()) {
             case LOADER_RECIPES:
                 ArrayAdapter<Recipe> recipesAdapter = new ArrayAdapter<>(this,
-                        R.layout.baking_widget_item_layout, data.toArray(new Recipe[data.size()]));
+                        R.layout.support_simple_spinner_dropdown_item, data.toArray(new Recipe[data.size()]));
                 mBinding.recipesSpinner.setAdapter(recipesAdapter);
 
                 break;

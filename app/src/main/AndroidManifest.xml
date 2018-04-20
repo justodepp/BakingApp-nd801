@@ -36,12 +36,18 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/baking_app_widget_info" />
         </receiver>
-
         <activity android:name=".widget.BakingAppWidgetConfigureActivity">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
         </activity>
+        <service android:name=".widget.ListWidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS"/>
+        <service android:name=".widget.BakingAppWidgetUpdateService">
+            <intent-filter>
+                <action android:name="com.deeper.bakingapp.widget.bakingappwidgeupdateservice.update_widget_list"/>
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>
