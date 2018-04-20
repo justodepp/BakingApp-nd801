@@ -255,9 +255,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             setDetailsPanel();
         } else {
             Intent intent = new Intent(this, RecipeDetailsActivity.class);
-            Bundle bundle = new Bundle();
-            bundle.putParcelable("recipe", recipe);
-            intent.putExtras(bundle);
+            intent.putExtra(StepperActivity.RECIPE_KEY, recipe);
             startActivity(intent);
         }
     }

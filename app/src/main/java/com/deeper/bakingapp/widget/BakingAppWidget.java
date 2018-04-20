@@ -28,7 +28,7 @@ public class BakingAppWidget extends AppWidgetProvider {
         Intent intent = new Intent(context, RecipeDetailsActivity.class);
         intent.putExtra(StepperActivity.RECIPE_KEY, recipe);
         // In widget we are not allowing to use intents as usually. We have to use PendingIntent instead of 'startActivity'
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         // Here the basic operations the remote view can do.
         views.setOnClickPendingIntent(R.id.widget_container, pendingIntent);
 
