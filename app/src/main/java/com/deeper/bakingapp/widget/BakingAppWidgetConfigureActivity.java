@@ -127,8 +127,12 @@ public class BakingAppWidgetConfigureActivity extends AppCompatActivity implemen
     public void onLoadFinished(@NonNull Loader<ArrayList<Recipe>> loader, ArrayList<Recipe> data) {
         switch (loader.getId()) {
             case LOADER_RECIPES:
+                /*ArrayList<String> nameList = new ArrayList<>();
+                for(Recipe recipe : data){
+                    nameList.add(recipe.getName());
+                }*/
                 ArrayAdapter<Recipe> recipesAdapter = new ArrayAdapter<>(this,
-                        R.layout.support_simple_spinner_dropdown_item, data.toArray(new Recipe[data.size()]));
+                        android.R.layout.simple_list_item_1, data);
                 mBinding.recipesSpinner.setAdapter(recipesAdapter);
 
                 break;

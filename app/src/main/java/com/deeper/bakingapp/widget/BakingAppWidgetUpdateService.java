@@ -35,7 +35,7 @@ public class BakingAppWidgetUpdateService extends IntentService {
         appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.widget_list);
     }
 
-    public static void startUpdateListWidgets(Context context) {
+    public static void updateListWidgets(Context context) {
         Intent intent = new Intent(context, BakingAppWidgetUpdateService.class);
         intent.setAction(ACTION_UPDATE_LIST_VIEW);
         context.startService(intent);

@@ -1,13 +1,10 @@
 package com.deeper.bakingapp.widget;
 
-import android.annotation.TargetApi;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
-import android.os.Bundle;
 import android.widget.RemoteViews;
 
 import com.deeper.bakingapp.R;
@@ -57,15 +54,7 @@ public class BakingAppWidget extends AppWidgetProvider {
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         //Start the intent service update widget action, the service takes care of updating the widgets UI
-        BakingAppWidgetUpdateService.startUpdateListWidgets(context);
-    }
-
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-    @Override
-    public void onAppWidgetOptionsChanged(Context context, AppWidgetManager appWidgetManager,
-                                          int appWidgetId, Bundle newOptions) {
-        updateAppWidget(context, appWidgetManager, appWidgetId);
-        super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions);
+        BakingAppWidgetUpdateService.updateListWidgets(context);
     }
 
     @Override
