@@ -161,45 +161,6 @@ public class RecipeDetailsActivity extends AppCompatActivity implements Fragment
 
     @Override
     public void onClickedFav(final Recipe recipe) {
-        /*new Thread(new Runnable() {
-            @Override
-            public void run() {
-                final boolean added;
-                if (recipe.getFavourite()) {
-                    added = false;
-                    bakingRoomDatabase.daoRecipe().deleteRecipe(recipe.getId());
-                }
-                else {
-                    added = true;
-
-                    bakingRoomDatabase.runInTransaction(new Runnable() {
-                        @Override
-                        public void run() {
-                            bakingRoomDatabase.daoRecipe().addRecipe(recipe);
-                            bakingRoomDatabase.daoIngredient().addIngredients(recipe.getIngredients());
-                            bakingRoomDatabase.daoStep().addSteps(recipe.getSteps());
-                        }
-                    });
-                }
-                recipe.setFavourite(!recipe.getFavourite());
-
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        fragmentRecipeDetailsList.updateFab(added);
-                    }
-                });
-
-                String message;
-                if (added)
-                    message = getString(R.string.label_fav_added);
-                else
-                    message = getString(R.string.label_fav_deleted);
-
-                Snackbar.make(fragmentRecipeDetailsList.getView().getRootView(),
-                        message, Snackbar.LENGTH_LONG).show();
-            }
-        }).start();*/
         new RoomAsyncTask().execute(recipe);
     }
 
