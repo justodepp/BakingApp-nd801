@@ -131,6 +131,11 @@ public class Recipe implements Parcelable {
         this.favourite = favourite;
     }
 
+    @Override
+    public String toString() {
+        return getName();
+    }
+
     public boolean displayEquals(Object obj) {
         if (! (obj instanceof Recipe)) return false;
 

@@ -43,7 +43,8 @@
         </activity>
         <service android:name=".widget.ListWidgetService"
             android:permission="android.permission.BIND_REMOTEVIEWS"/>
-        <service android:name=".widget.BakingAppWidgetUpdateService">
+        <service android:name=".widget.BakingAppWidgetUpdateService"
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.deeper.bakingapp.widget.bakingappwidgeupdateservice.update_widget_list"/>
             </intent-filter>

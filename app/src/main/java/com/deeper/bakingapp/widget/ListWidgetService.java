@@ -35,7 +35,7 @@ public class ListWidgetService extends RemoteViewsService {
         Context mContext;
         ArrayList<Ingredient> ingredientList;
 
-        public ListRemoteViewsFactory(Context applicationContext, ArrayList<Ingredient> ingredients) {
+        ListRemoteViewsFactory(Context applicationContext, ArrayList<Ingredient> ingredients) {
             mContext = applicationContext;
             ingredientList = ingredients;
         }
