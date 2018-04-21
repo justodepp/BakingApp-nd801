@@ -129,9 +129,14 @@ public class BakingAppWidgetConfigureActivity extends AppCompatActivity implemen
             case LOADER_RECIPES:
                 mBinding.toolbar.setTitle(R.string.app_name);
 
-                ArrayAdapter<Recipe> recipesAdapter = new ArrayAdapter<>(this,
-                        android.R.layout.simple_list_item_1, data);
-                mBinding.recipesSpinner.setAdapter(recipesAdapter);
+                if(data.size() != 0) {
+                    mBinding.recipesSpinner.setEnabled(true);
+                    ArrayAdapter<Recipe> recipesAdapter = new ArrayAdapter<>(this,
+                            android.R.layout.simple_list_item_1, data);
+                    mBinding.recipesSpinner.setAdapter(recipesAdapter);
+                } else {
+                    mBinding.recipesSpinner.setEnabled(false);
+                }
 
                 break;
 

@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -61,6 +62,14 @@ public class FragmentStepperStep extends Fragment implements com.stepstone.stepp
         }
 
         initializePlayer();
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+
+        if (savedInstanceState.containsKey(CURRENT_VIDEO_POSITION))
+            playbackPosition = savedInstanceState.getLong(CURRENT_VIDEO_POSITION);
     }
 
     @Override
@@ -161,7 +170,8 @@ public class FragmentStepperStep extends Fragment implements com.stepstone.stepp
 
             showVideoView();
         } else if(hasThumbnail) {
-            if(step.getThumbnailURL().endsWith(".mp4")){
+            // Check error API
+            /*if(step.getThumbnailURL().endsWith(".mp4")){
                 Uri uri = Uri.parse(step.getThumbnailURL());
                 MediaSource mediaSource = buildMediaSource(uri);
                 mExoPlayer.prepare(mediaSource, true, false);
@@ -174,7 +184,11 @@ public class FragmentStepperStep extends Fragment implements com.stepstone.stepp
                 mBinding.playerView.setVisibility(View.GONE);
 
                 Picasso.get().load(step.getThumbnailURL()).into(mBinding.stepThumbnail);
-            }
+            }*/
+            mBinding.labelVideoNotAvailable.setVisibility(View.GONE);
+            mBinding.stepThumbnail.setVisibility(View.VISIBLE);
+            mBinding.playerView.setVisibility(View.GONE);
+            Picasso.get().load(step.getThumbnailURL()).into(mBinding.stepThumbnail);
         } else {
             hideVideoView();
         }
