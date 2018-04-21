@@ -68,8 +68,9 @@ public class FragmentStepperStep extends Fragment implements com.stepstone.stepp
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
 
-        if (savedInstanceState.containsKey(CURRENT_VIDEO_POSITION))
-            playbackPosition = savedInstanceState.getLong(CURRENT_VIDEO_POSITION);
+        if(savedInstanceState != null)
+            if (savedInstanceState.containsKey(CURRENT_VIDEO_POSITION))
+                playbackPosition = savedInstanceState.getLong(CURRENT_VIDEO_POSITION);
     }
 
     @Override
@@ -103,8 +104,6 @@ public class FragmentStepperStep extends Fragment implements com.stepstone.stepp
     }
 
     private void updateUI() {
-        playbackPosition = 0;
-        currentWindow = 0;
 
         mBinding.labelStepDetail.setText(step.getShortDescription());
         mBinding.stepDetailTextview.setText(step.getDescription());
