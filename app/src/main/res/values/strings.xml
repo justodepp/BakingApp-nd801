@@ -22,7 +22,7 @@
     <string name="step_thumbnail">Step\'s Thumbnail</string>
 
     <!-- Widget -->
-    <string name="empty_recipe">No favourite recipe!</string>
+    <string name="empty_recipe">You must add at least one favourite recipe!</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

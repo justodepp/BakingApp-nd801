@@ -35,6 +35,7 @@ import com.stepstone.stepper.VerificationError;
 public class FragmentStepperStep extends Fragment implements com.stepstone.stepper.Step {
 
     private static final String CURRENT_VIDEO_POSITION = "video_position";
+    private static final String CURRENT_VIDEO_STATE = "video_state";
 
     FragmentDetailsStepperBinding mBinding;
     Step step;
@@ -49,6 +50,8 @@ public class FragmentStepperStep extends Fragment implements com.stepstone.stepp
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_details_stepper,
                 container, false);
         playbackPosition = savedInstanceState != null ? savedInstanceState.getLong(CURRENT_VIDEO_POSITION) : 0;
+        playWhenReady = savedInstanceState != null ? savedInstanceState.getBoolean("state") : true;
+
         initUI();
 
         return mBinding.getRoot();
@@ -61,22 +64,27 @@ public class FragmentStepperStep extends Fragment implements com.stepstone.stepp
             }
         }
 
-        initializePlayer();
+        updateUI();
     }
 
     @Override
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
 
-        if(savedInstanceState != null)
+        if(savedInstanceState != null) {
             if (savedInstanceState.containsKey(CURRENT_VIDEO_POSITION))
                 playbackPosition = savedInstanceState.getLong(CURRENT_VIDEO_POSITION);
+            if (savedInstanceState.containsKey(CURRENT_VIDEO_STATE))
+                playWhenReady = savedInstanceState.getBoolean(CURRENT_VIDEO_STATE);
+        }
     }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
-        if(mExoPlayer != null)
+        if(mExoPlayer != null) {
             outState.putLong(CURRENT_VIDEO_POSITION, mExoPlayer.getCurrentPosition());
+            outState.putBoolean(CURRENT_VIDEO_STATE, mExoPlayer.getPlayWhenReady());
+        }
         super.onSaveInstanceState(outState);
     }
 
